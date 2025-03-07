@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(965, 638)
+        MainWindow.resize(965, 639)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -52,10 +52,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer)
 
-        self.spinBox_input_N = QSpinBox(self.horizontalLayoutWidget_4)
-        self.spinBox_input_N.setObjectName(u"spinBox_input_N")
+        self.spinBox_input_N_spiral = QSpinBox(self.horizontalLayoutWidget_4)
+        self.spinBox_input_N_spiral.setObjectName(u"spinBox_input_N_spiral")
 
-        self.horizontalLayout_4.addWidget(self.spinBox_input_N)
+        self.horizontalLayout_4.addWidget(self.spinBox_input_N_spiral)
 
         self.horizontalLayoutWidget_5 = QWidget(self.groupBox)
         self.horizontalLayoutWidget_5.setObjectName(u"horizontalLayoutWidget_5")
@@ -72,10 +72,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addItem(self.horizontalSpacer_2)
 
-        self.spinBox_input_m = QSpinBox(self.horizontalLayoutWidget_5)
-        self.spinBox_input_m.setObjectName(u"spinBox_input_m")
+        self.spinBox_input_N_ring = QSpinBox(self.horizontalLayoutWidget_5)
+        self.spinBox_input_N_ring.setObjectName(u"spinBox_input_N_ring")
 
-        self.horizontalLayout_5.addWidget(self.spinBox_input_m)
+        self.horizontalLayout_5.addWidget(self.spinBox_input_N_ring)
 
         self.horizontalLayoutWidget_6 = QWidget(self.groupBox)
         self.horizontalLayoutWidget_6.setObjectName(u"horizontalLayoutWidget_6")
@@ -92,10 +92,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addItem(self.horizontalSpacer_3)
 
-        self.spinBox_input_m_shp = QSpinBox(self.horizontalLayoutWidget_6)
-        self.spinBox_input_m_shp.setObjectName(u"spinBox_input_m_shp")
+        self.spinBox_input_N_shp = QSpinBox(self.horizontalLayoutWidget_6)
+        self.spinBox_input_N_shp.setObjectName(u"spinBox_input_N_shp")
 
-        self.horizontalLayout_6.addWidget(self.spinBox_input_m_shp)
+        self.horizontalLayout_6.addWidget(self.spinBox_input_N_shp)
 
 
         self.gridLayout.addWidget(self.groupBox, 1, 1, 1, 1)
@@ -671,10 +671,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addItem(self.horizontalSpacer_7)
 
-        self.doubleSpinBox_input_a_sp = QDoubleSpinBox(self.horizontalLayoutWidget_7)
-        self.doubleSpinBox_input_a_sp.setObjectName(u"doubleSpinBox_input_a_sp")
+        self.doubleSpinBox_input_thinkness_spiral = QDoubleSpinBox(self.horizontalLayoutWidget_7)
+        self.doubleSpinBox_input_thinkness_spiral.setObjectName(u"doubleSpinBox_input_thinkness_spiral")
 
-        self.horizontalLayout_7.addWidget(self.doubleSpinBox_input_a_sp)
+        self.horizontalLayout_7.addWidget(self.doubleSpinBox_input_thinkness_spiral)
 
         self.horizontalLayoutWidget_8 = QWidget(self.groupBox_4)
         self.horizontalLayoutWidget_8.setObjectName(u"horizontalLayoutWidget_8")
@@ -691,10 +691,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addItem(self.horizontalSpacer_8)
 
-        self.doubleSpinBox_input_b_sp = QDoubleSpinBox(self.horizontalLayoutWidget_8)
-        self.doubleSpinBox_input_b_sp.setObjectName(u"doubleSpinBox_input_b_sp")
+        self.doubleSpinBox_input_height_spiral = QDoubleSpinBox(self.horizontalLayoutWidget_8)
+        self.doubleSpinBox_input_height_spiral.setObjectName(u"doubleSpinBox_input_height_spiral")
 
-        self.horizontalLayout_8.addWidget(self.doubleSpinBox_input_b_sp)
+        self.horizontalLayout_8.addWidget(self.doubleSpinBox_input_height_spiral)
 
         self.groupBox_5 = QGroupBox(self.groupBox_2)
         self.groupBox_5.setObjectName(u"groupBox_5")
@@ -714,10 +714,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_9)
 
-        self.doubleSpinBox_input_a_col = QDoubleSpinBox(self.horizontalLayoutWidget_9)
-        self.doubleSpinBox_input_a_col.setObjectName(u"doubleSpinBox_input_a_col")
+        self.doubleSpinBox_input_thinkness_ring = QDoubleSpinBox(self.horizontalLayoutWidget_9)
+        self.doubleSpinBox_input_thinkness_ring.setObjectName(u"doubleSpinBox_input_thinkness_ring")
 
-        self.horizontalLayout_9.addWidget(self.doubleSpinBox_input_a_col)
+        self.horizontalLayout_9.addWidget(self.doubleSpinBox_input_thinkness_ring)
 
         self.horizontalLayoutWidget_10 = QWidget(self.groupBox_5)
         self.horizontalLayoutWidget_10.setObjectName(u"horizontalLayoutWidget_10")
@@ -734,10 +734,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_10)
 
-        self.doubleSpinBox_input_b_col = QDoubleSpinBox(self.horizontalLayoutWidget_10)
-        self.doubleSpinBox_input_b_col.setObjectName(u"doubleSpinBox_input_b_col")
+        self.doubleSpinBox_input_think_ring = QDoubleSpinBox(self.horizontalLayoutWidget_10)
+        self.doubleSpinBox_input_think_ring.setObjectName(u"doubleSpinBox_input_think_ring")
 
-        self.horizontalLayout_10.addWidget(self.doubleSpinBox_input_b_col)
+        self.horizontalLayout_10.addWidget(self.doubleSpinBox_input_think_ring)
 
         self.groupBox_6 = QGroupBox(self.groupBox_2)
         self.groupBox_6.setObjectName(u"groupBox_6")
@@ -757,10 +757,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_11.addItem(self.horizontalSpacer_11)
 
-        self.doubleSpinBox_input_a_shp = QDoubleSpinBox(self.horizontalLayoutWidget_11)
-        self.doubleSpinBox_input_a_shp.setObjectName(u"doubleSpinBox_input_a_shp")
+        self.doubleSpinBox_input_thinkness_shp = QDoubleSpinBox(self.horizontalLayoutWidget_11)
+        self.doubleSpinBox_input_thinkness_shp.setObjectName(u"doubleSpinBox_input_thinkness_shp")
 
-        self.horizontalLayout_11.addWidget(self.doubleSpinBox_input_a_shp)
+        self.horizontalLayout_11.addWidget(self.doubleSpinBox_input_thinkness_shp)
 
         self.horizontalLayoutWidget_12 = QWidget(self.groupBox_6)
         self.horizontalLayoutWidget_12.setObjectName(u"horizontalLayoutWidget_12")
@@ -777,10 +777,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_12)
 
-        self.doubleSpinBox_input_b_shp = QDoubleSpinBox(self.horizontalLayoutWidget_12)
-        self.doubleSpinBox_input_b_shp.setObjectName(u"doubleSpinBox_input_b_shp")
+        self.doubleSpinBox_input_thing_shp = QDoubleSpinBox(self.horizontalLayoutWidget_12)
+        self.doubleSpinBox_input_thing_shp.setObjectName(u"doubleSpinBox_input_thing_shp")
 
-        self.horizontalLayout_12.addWidget(self.doubleSpinBox_input_b_shp)
+        self.horizontalLayout_12.addWidget(self.doubleSpinBox_input_thing_shp)
 
 
         self.gridLayout.addWidget(self.groupBox_2, 1, 0, 3, 1)
@@ -790,15 +790,15 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.groupBox_10.sizePolicy().hasHeightForWidth())
         self.groupBox_10.setSizePolicy(sizePolicy1)
         self.groupBox_10.setMinimumSize(QSize(0, 315))
-        self.widget = QWidget(self.groupBox_10)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(10, 27, 141, 91))
-        self.verticalLayout = QVBoxLayout(self.widget)
+        self.layoutWidget4 = QWidget(self.groupBox_10)
+        self.layoutWidget4.setObjectName(u"layoutWidget4")
+        self.layoutWidget4.setGeometry(QRect(10, 27, 141, 108))
+        self.verticalLayout = QVBoxLayout(self.layoutWidget4)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_35 = QHBoxLayout()
         self.horizontalLayout_35.setObjectName(u"horizontalLayout_35")
-        self.label_M1 = QLabel(self.widget)
+        self.label_M1 = QLabel(self.layoutWidget4)
         self.label_M1.setObjectName(u"label_M1")
 
         self.horizontalLayout_35.addWidget(self.label_M1)
@@ -807,7 +807,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_35.addItem(self.horizontalSpacer_34)
 
-        self.label_value_M_1 = QLabel(self.widget)
+        self.label_value_M_1 = QLabel(self.layoutWidget4)
         self.label_value_M_1.setObjectName(u"label_value_M_1")
 
         self.horizontalLayout_35.addWidget(self.label_value_M_1)
@@ -817,7 +817,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_36 = QHBoxLayout()
         self.horizontalLayout_36.setObjectName(u"horizontalLayout_36")
-        self.label_M2 = QLabel(self.widget)
+        self.label_M2 = QLabel(self.layoutWidget4)
         self.label_M2.setObjectName(u"label_M2")
 
         self.horizontalLayout_36.addWidget(self.label_M2)
@@ -826,7 +826,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_36.addItem(self.horizontalSpacer_35)
 
-        self.label_value_M_2 = QLabel(self.widget)
+        self.label_value_M_2 = QLabel(self.layoutWidget4)
         self.label_value_M_2.setObjectName(u"label_value_M_2")
 
         self.horizontalLayout_36.addWidget(self.label_value_M_2)
@@ -836,7 +836,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_37 = QHBoxLayout()
         self.horizontalLayout_37.setObjectName(u"horizontalLayout_37")
-        self.label_M3 = QLabel(self.widget)
+        self.label_M3 = QLabel(self.layoutWidget4)
         self.label_M3.setObjectName(u"label_M3")
 
         self.horizontalLayout_37.addWidget(self.label_M3)
@@ -845,7 +845,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_37.addItem(self.horizontalSpacer_36)
 
-        self.label_value_M_3 = QLabel(self.widget)
+        self.label_value_M_3 = QLabel(self.layoutWidget4)
         self.label_value_M_3.setObjectName(u"label_value_M_3")
 
         self.horizontalLayout_37.addWidget(self.label_value_M_3)
@@ -855,7 +855,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_38 = QHBoxLayout()
         self.horizontalLayout_38.setObjectName(u"horizontalLayout_38")
-        self.label_M4 = QLabel(self.widget)
+        self.label_M4 = QLabel(self.layoutWidget4)
         self.label_M4.setObjectName(u"label_M4")
 
         self.horizontalLayout_38.addWidget(self.label_M4)
@@ -864,7 +864,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_38.addItem(self.horizontalSpacer_37)
 
-        self.label_value_M_4 = QLabel(self.widget)
+        self.label_value_M_4 = QLabel(self.layoutWidget4)
         self.label_value_M_4.setObjectName(u"label_value_M_4")
 
         self.horizontalLayout_38.addWidget(self.label_value_M_4)
@@ -872,15 +872,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_38)
 
-        self.widget1 = QWidget(self.groupBox_10)
-        self.widget1.setObjectName(u"widget1")
-        self.widget1.setGeometry(QRect(10, 130, 141, 91))
-        self.verticalLayout_2 = QVBoxLayout(self.widget1)
+        self.layoutWidget5 = QWidget(self.groupBox_10)
+        self.layoutWidget5.setObjectName(u"layoutWidget5")
+        self.layoutWidget5.setGeometry(QRect(10, 130, 141, 108))
+        self.verticalLayout_2 = QVBoxLayout(self.layoutWidget5)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_39 = QHBoxLayout()
         self.horizontalLayout_39.setObjectName(u"horizontalLayout_39")
-        self.label_V1 = QLabel(self.widget1)
+        self.label_V1 = QLabel(self.layoutWidget5)
         self.label_V1.setObjectName(u"label_V1")
 
         self.horizontalLayout_39.addWidget(self.label_V1)
@@ -889,7 +889,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_39.addItem(self.horizontalSpacer_38)
 
-        self.label_value_V_1 = QLabel(self.widget1)
+        self.label_value_V_1 = QLabel(self.layoutWidget5)
         self.label_value_V_1.setObjectName(u"label_value_V_1")
 
         self.horizontalLayout_39.addWidget(self.label_value_V_1)
@@ -899,7 +899,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_40 = QHBoxLayout()
         self.horizontalLayout_40.setObjectName(u"horizontalLayout_40")
-        self.label_V2 = QLabel(self.widget1)
+        self.label_V2 = QLabel(self.layoutWidget5)
         self.label_V2.setObjectName(u"label_V2")
 
         self.horizontalLayout_40.addWidget(self.label_V2)
@@ -908,7 +908,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_40.addItem(self.horizontalSpacer_39)
 
-        self.label_value_V_2 = QLabel(self.widget1)
+        self.label_value_V_2 = QLabel(self.layoutWidget5)
         self.label_value_V_2.setObjectName(u"label_value_V_2")
 
         self.horizontalLayout_40.addWidget(self.label_value_V_2)
@@ -918,7 +918,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_41 = QHBoxLayout()
         self.horizontalLayout_41.setObjectName(u"horizontalLayout_41")
-        self.label_V3 = QLabel(self.widget1)
+        self.label_V3 = QLabel(self.layoutWidget5)
         self.label_V3.setObjectName(u"label_V3")
 
         self.horizontalLayout_41.addWidget(self.label_V3)
@@ -927,7 +927,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_41.addItem(self.horizontalSpacer_40)
 
-        self.label_value_V_3 = QLabel(self.widget1)
+        self.label_value_V_3 = QLabel(self.layoutWidget5)
         self.label_value_V_3.setObjectName(u"label_value_V_3")
 
         self.horizontalLayout_41.addWidget(self.label_value_V_3)
@@ -937,7 +937,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_42 = QHBoxLayout()
         self.horizontalLayout_42.setObjectName(u"horizontalLayout_42")
-        self.label_V4 = QLabel(self.widget1)
+        self.label_V4 = QLabel(self.layoutWidget5)
         self.label_V4.setObjectName(u"label_V4")
 
         self.horizontalLayout_42.addWidget(self.label_V4)
@@ -946,7 +946,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_42.addItem(self.horizontalSpacer_41)
 
-        self.label_value_V_4 = QLabel(self.widget1)
+        self.label_value_V_4 = QLabel(self.layoutWidget5)
         self.label_value_V_4.setObjectName(u"label_value_V_4")
 
         self.horizontalLayout_42.addWidget(self.label_value_V_4)
@@ -954,15 +954,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_42)
 
-        self.widget2 = QWidget(self.groupBox_10)
-        self.widget2.setObjectName(u"widget2")
-        self.widget2.setGeometry(QRect(10, 220, 141, 51))
-        self.verticalLayout_6 = QVBoxLayout(self.widget2)
+        self.layoutWidget6 = QWidget(self.groupBox_10)
+        self.layoutWidget6.setObjectName(u"layoutWidget6")
+        self.layoutWidget6.setGeometry(QRect(10, 220, 141, 52))
+        self.verticalLayout_6 = QVBoxLayout(self.layoutWidget6)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_43 = QHBoxLayout()
         self.horizontalLayout_43.setObjectName(u"horizontalLayout_43")
-        self.label_p1 = QLabel(self.widget2)
+        self.label_p1 = QLabel(self.layoutWidget6)
         self.label_p1.setObjectName(u"label_p1")
 
         self.horizontalLayout_43.addWidget(self.label_p1)
@@ -971,7 +971,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_43.addItem(self.horizontalSpacer_42)
 
-        self.label_value_p_1 = QLabel(self.widget2)
+        self.label_value_p_1 = QLabel(self.layoutWidget6)
         self.label_value_p_1.setObjectName(u"label_value_p_1")
 
         self.horizontalLayout_43.addWidget(self.label_value_p_1)
@@ -981,7 +981,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_44 = QHBoxLayout()
         self.horizontalLayout_44.setObjectName(u"horizontalLayout_44")
-        self.label_p2 = QLabel(self.widget2)
+        self.label_p2 = QLabel(self.layoutWidget6)
         self.label_p2.setObjectName(u"label_p2")
 
         self.horizontalLayout_44.addWidget(self.label_p2)
@@ -990,7 +990,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_44.addItem(self.horizontalSpacer_43)
 
-        self.label_value_p_2 = QLabel(self.widget2)
+        self.label_value_p_2 = QLabel(self.layoutWidget6)
         self.label_value_p_2.setObjectName(u"label_value_p_2")
 
         self.horizontalLayout_44.addWidget(self.label_value_p_2)
@@ -998,13 +998,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_44)
 
-        self.widget3 = QWidget(self.groupBox_10)
-        self.widget3.setObjectName(u"widget3")
-        self.widget3.setGeometry(QRect(10, 280, 141, 22))
-        self.horizontalLayout_45 = QHBoxLayout(self.widget3)
+        self.layoutWidget7 = QWidget(self.groupBox_10)
+        self.layoutWidget7.setObjectName(u"layoutWidget7")
+        self.layoutWidget7.setGeometry(QRect(10, 280, 141, 22))
+        self.horizontalLayout_45 = QHBoxLayout(self.layoutWidget7)
         self.horizontalLayout_45.setObjectName(u"horizontalLayout_45")
         self.horizontalLayout_45.setContentsMargins(0, 0, 0, 0)
-        self.label_M = QLabel(self.widget3)
+        self.label_M = QLabel(self.layoutWidget7)
         self.label_M.setObjectName(u"label_M")
 
         self.horizontalLayout_45.addWidget(self.label_M)
@@ -1013,7 +1013,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_45.addItem(self.horizontalSpacer_44)
 
-        self.label_value_M = QLabel(self.widget3)
+        self.label_value_M = QLabel(self.layoutWidget7)
         self.label_value_M.setObjectName(u"label_value_M")
 
         self.horizontalLayout_45.addWidget(self.label_value_M)
