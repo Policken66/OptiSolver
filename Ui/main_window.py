@@ -734,10 +734,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_10)
 
-        self.doubleSpinBox_input_think_ring = QDoubleSpinBox(self.horizontalLayoutWidget_10)
-        self.doubleSpinBox_input_think_ring.setObjectName(u"doubleSpinBox_input_think_ring")
+        self.doubleSpinBox_input_height_ring = QDoubleSpinBox(self.horizontalLayoutWidget_10)
+        self.doubleSpinBox_input_height_ring.setObjectName(u"doubleSpinBox_input_height_ring")
 
-        self.horizontalLayout_10.addWidget(self.doubleSpinBox_input_think_ring)
+        self.horizontalLayout_10.addWidget(self.doubleSpinBox_input_height_ring)
 
         self.groupBox_6 = QGroupBox(self.groupBox_2)
         self.groupBox_6.setObjectName(u"groupBox_6")
@@ -777,10 +777,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_12)
 
-        self.doubleSpinBox_input_thing_shp = QDoubleSpinBox(self.horizontalLayoutWidget_12)
-        self.doubleSpinBox_input_thing_shp.setObjectName(u"doubleSpinBox_input_thing_shp")
+        self.doubleSpinBox_input_height_shp = QDoubleSpinBox(self.horizontalLayoutWidget_12)
+        self.doubleSpinBox_input_height_shp.setObjectName(u"doubleSpinBox_input_height_shp")
 
-        self.horizontalLayout_12.addWidget(self.doubleSpinBox_input_thing_shp)
+        self.horizontalLayout_12.addWidget(self.doubleSpinBox_input_height_shp)
 
 
         self.gridLayout.addWidget(self.groupBox_2, 1, 0, 3, 1)

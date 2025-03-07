@@ -3,15 +3,15 @@ from PySide6.QtWidgets import QMainWindow
 
 from Controllers.file_controller import FileController
 from Controllers.mapdl_controller import MAPDLController
+from Models.edge_model import EdgeModel
 from Models.mesh_model import MeshModel
-from Ui.main_window import Ui_MainWindow
+from Views.main_window_view import MainWindowView
 
 
 class MainWindowController(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+    def __init__(self, view: MainWindowView):
+        self.view = view
+        self.ui = view.ui
 
         self.ui.doubleSpinBox_input_R1.valueChanged.connect(self.compare_values)
         self.ui.doubleSpinBox_input_R2.valueChanged.connect(self.compare_values)
@@ -19,87 +19,123 @@ class MainWindowController(QMainWindow):
         self.default_value_for_calculated_parameters()
 
         # Обработчик событий
-        self.ui.pushButton_save.clicked.connect(self.btn_start_pressed)
-        self.ui.pushButton_generate.clicked.connect(self.btn_generate_pressed)
+        self.ui.pushButton_save.clicked.connect(self.pushButton_save_clicked)
+        self.ui.pushButton_generate.clicked.connect(self.pushButton_generate_clicked)
 
-        self.current_mesh_model = MeshModel()
+        # Переменные
+        self.current_mesh_model = None
 
-    def btn_start_pressed(self):
-        automation = MAPDLController()
-        automation.execute()
+    def pushButton_save_clicked(self):
+        self.current_mesh_model = self.init_mesh_model()
 
-    def btn_save_pressed(self):
-        # Заполнение геометрических параметров
-        self.current_mesh_model.R1 = self.ui.doubleSpinBox_input_R1.value()
-        self.current_mesh_model.R2 = self.ui.doubleSpinBox_input_R2.value()
-        self.current_mesh_model.H = self.ui.doubleSpinBox_input_H.value()
+    def pushButton_start_clicked(self):
+        print("PushButton start clicked")
+        # automation = MAPDLController()
+        # automation.execute()
 
-        # Заполнение параметров разбиения
-        self.current_mesh_model.N = self.ui.spinBox_input_N.value()
-        self.current_mesh_model.m = self.ui.spinBox_input_m.value()
-        self.current_mesh_model.m_shp = self.ui.spinBox_input_m_shp.value()
+    def pushButton_generate_clicked(self):
+        print("PushButton generate clicked")
 
-        # Заполнение размеров ребер
-        self.current_mesh_model.a_sp = self.ui.doubleSpinBox_input_a_sp.value()
-        self.current_mesh_model.b_sp = self.ui.doubleSpinBox_input_b_sp.value()
-        self.current_mesh_model.a_col = self.ui.doubleSpinBox_input_a_col.value()
-        self.current_mesh_model.b_col = self.ui.doubleSpinBox_input_b_col.value()
-        self.current_mesh_model.a_shp = self.ui.doubleSpinBox_input_a_shp.value()
-        self.current_mesh_model.b_shp = self.ui.doubleSpinBox_input_b_shp.value()
+    def init_mesh_model(self):
+        R1 = self.ui.doubleSpinBox_input_R1.value()
+        R2 = self.ui.doubleSpinBox_input_R2.value()
+        H = self.ui.doubleSpinBox_input_H.value()
 
-        # Заполнение механических свойств материалов для спиральных ребер
-        self.current_mesh_model.material_spiral = {
-            "E_x": self.ui.doubleSpinBox_input_E_x_spiral.value(),
-            "E_y": self.ui.doubleSpinBox_input_E_y_spiral.value(),
-            "E_z": self.ui.doubleSpinBox_input_E_z_spiral.value(),
-            "G_xy": self.ui.doubleSpinBox_input_G_xy_spiral.value(),
-            "G_yz": self.ui.doubleSpinBox_input_G_yz_spiral.value(),
-            "G_xz": self.ui.doubleSpinBox_input_G_xz_spiral.value(),
-            "v": self.ui.doubleSpinBox_input_v_spiral.value()
-        }
+        spiral_edge = self.init_spiral_edge()
+        ring_edge = self.init_ring_edge()
+        shp_edge = self.init_shp_edge()
 
-        # Заполнение механических свойств материалов для кольцевых ребер
-        self.current_mesh_model.material_ring = {
-            "E_x": self.ui.doubleSpinBox_input_E_x_ring.value(),
-            "E_y": self.ui.doubleSpinBox_input_E_y_ring.value(),
-            "E_z": self.ui.doubleSpinBox_input_E_z_ring.value(),
-            "G_xy": self.ui.doubleSpinBox_input_G_xy_ring.value(),
-            "G_yz": self.ui.doubleSpinBox_input_G_yz_ring.value(),
-            "G_xz": self.ui.doubleSpinBox_input_G_xz_ring.value(),
-            "v": self.ui.doubleSpinBox_input_v_ring.value()
-        }
+        # Создание объекта MeshModel с передачей всех параметров
+        mesh_model = MeshModel(
+            R1=R1,
+            R2=R2,
+            H=H,
+            spiral_edge=spiral_edge,
+            ring_edge=ring_edge,
+            shp_edge=shp_edge
+        )
 
-        # Заполнение механических свойств материалов для шпангоутов
-        self.current_mesh_model.material_shp = {
-            "E_x": self.ui.doubleSpinBox_input_E_x_shp.value(),
-            "E_y": self.ui.doubleSpinBox_input_E_y_shp.value(),
-            "E_z": self.ui.doubleSpinBox_input_E_z_shp.value(),
-            "G_xy": self.ui.doubleSpinBox_input_G_xy_shp.value(),
-            "G_yz": self.ui.doubleSpinBox_input_G_yz_shp.value(),
-            "G_xz": self.ui.doubleSpinBox_input_G_xz_shp.value(),
-            "v": self.ui.doubleSpinBox_input_v_shp.value()
-        }
+        return mesh_model
 
-        print("Данные успешно сохранены в объект MeshModel!")
+    def init_spiral_edge(self):
+        quantity = self.ui.spinBox_input_N_spiral.value()
+        thickness = self.ui.doubleSpinBox_input_thinkness_spiral.value()
+        height = self.ui.doubleSpinBox_input_height_spiral.value()
+        E_x = self.ui.doubleSpinBox_input_E_x_spiral.value()
+        E_y = self.ui.doubleSpinBox_input_E_y_spiral.value()
+        E_z = self.ui.doubleSpinBox_input_E_z_spiral.value()
+        G_xy = self.ui.doubleSpinBox_input_G_xy_spiral.value()
+        G_yz = self.ui.doubleSpinBox_input_G_yz_spiral.value()
+        G_xz = self.ui.doubleSpinBox_input_G_xz_spiral.value()
+        v = self.ui.doubleSpinBox_input_v_spiral.value()
 
-    def btn_generate_pressed(self):
-        # Заполнение параметров (для примера)
-        self.current_mesh_model.R1 = 1.5
-        self.current_mesh_model.R2 = 1.0
-        self.current_mesh_model.H = 5.0
-        self.current_mesh_model.N = 30
-        self.current_mesh_model.m = 7
-        self.current_mesh_model.m_shp = 5
-        self.current_mesh_model.a_sp = 0.006
-        self.current_mesh_model.b_sp = 0.03
-        self.current_mesh_model.material_spiral = {
-            "E_x": 70e9, "E_y": 70e9, "E_z": 70e9,
-            "G_xy": 26e9, "G_yz": 26e9, "G_xz": 26e9,
-            "v": 0.33
-        }
-        FileController.save_mesh_model_to_txt(self.current_mesh_model)
-        FileController.generate_apdl_file(self.current_mesh_model)
-        print("btn generate pressed")
+        # Создание объекта с передачей всех параметров
+        spiral_edge = EdgeModel(
+            quantity=quantity,
+            thickness=thickness,
+            height=height,
+            E_x=E_x,
+            E_y=E_y,
+            E_z=E_z,
+            G_xy=G_xy,
+            G_yz=G_yz,
+            G_xz=G_xz,
+            v=v
+        )
+        return spiral_edge
+
+    def init_ring_edge(self):
+        quantity = self.ui.spinBox_input_N_ring.value()
+        thickness = self.ui.doubleSpinBox_input_thinkness_ring.value()
+        height = self.ui.doubleSpinBox_input_height_ring.value()
+        E_x = self.ui.doubleSpinBox_input_E_x_ring.value()
+        E_y = self.ui.doubleSpinBox_input_E_y_ring.value()
+        E_z = self.ui.doubleSpinBox_input_E_z_ring.value()
+        G_xy = self.ui.doubleSpinBox_input_G_xy_ring.value()
+        G_yz = self.ui.doubleSpinBox_input_G_yz_ring.value()
+        G_xz = self.ui.doubleSpinBox_input_G_xz_ring.value()
+        v = self.ui.doubleSpinBox_input_v_ring.value()
+
+        ring_edge = EdgeModel(
+            quantity=quantity,
+            thickness=thickness,
+            height=height,
+            E_x=E_x,
+            E_y=E_y,
+            E_z=E_z,
+            G_xy=G_xy,
+            G_yz=G_yz,
+            G_xz=G_xz,
+            v=v
+        )
+        return ring_edge
+
+    def init_shp_edge(self):
+        quantity = self.ui.spinBox_input_N_shp.value()
+        thickness = self.ui.doubleSpinBox_input_thinkness_shp.value()
+        height = self.ui.doubleSpinBox_input_height_shp.value()
+        E_x = self.ui.doubleSpinBox_input_E_x_shp.value()
+        E_y = self.ui.doubleSpinBox_input_E_y_shp.value()
+        E_z = self.ui.doubleSpinBox_input_E_z_shp.value()
+        G_xy = self.ui.doubleSpinBox_input_G_xy_shp.value()
+        G_yz = self.ui.doubleSpinBox_input_G_yz_shp.value()
+        G_xz = self.ui.doubleSpinBox_input_G_xz_shp.value()
+        v = self.ui.doubleSpinBox_input_v_shp.value()
+
+        shp_edge = EdgeModel(
+            quantity=quantity,
+            thickness=thickness,
+            height=height,
+            E_x=E_x,
+            E_y=E_y,
+            E_z=E_z,
+            G_xy=G_xy,
+            G_yz=G_yz,
+            G_xz=G_xz,
+            v=v
+        )
+        return shp_edge
+
 
     def compare_values(self):
         r1 = self.ui.doubleSpinBox_input_R1.value()

@@ -1172,7 +1172,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_input_think_ring"/>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_input_height_ring"/>
          </item>
         </layout>
        </widget>
@@ -1255,7 +1255,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_input_thing_shp"/>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_input_height_shp"/>
          </item>
         </layout>
        </widget>
