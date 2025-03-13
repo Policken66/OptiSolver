@@ -1,40 +1,52 @@
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QMainWindow, QMessageBox
+from ansys.mapdl.core import launch_mapdl
 
-from Controllers.file_controller import FileController
-from Controllers.mapdl_controller import MAPDLController
 from Models.edge_model import EdgeModel
 from Models.mesh_model import MeshModel
+from Models.spiral_structure_model import SpiralStructureModel
+from Utils.MAPDL import PyMAPDLModel
 from Views.main_window_view import MainWindowView
 
 
 class MainWindowController(QMainWindow):
     def __init__(self, view: MainWindowView):
+        # Переменные
         self.view = view
         self.ui = view.ui
+        self.current_mesh_model = None
+        self.mapdl_model = None
 
+        # Обработка событий
         self.ui.doubleSpinBox_input_R1.valueChanged.connect(self.compare_values)
         self.ui.doubleSpinBox_input_R2.valueChanged.connect(self.compare_values)
 
-        self.default_value_for_calculated_parameters()
-
-        # Обработчик событий
+        # Сигналы и слоты
         self.ui.pushButton_save.clicked.connect(self.pushButton_save_clicked)
         self.ui.pushButton_generate.clicked.connect(self.pushButton_generate_clicked)
 
-        # Переменные
-        self.current_mesh_model = None
-
     def pushButton_save_clicked(self):
         self.current_mesh_model = self.init_mesh_model()
-
-    def pushButton_start_clicked(self):
-        print("PushButton start clicked")
-        # automation = MAPDLController()
-        # automation.execute()
+        # Проверяем успешность создания
+        if self.current_mesh_model:
+            # Создаем QMessageBox
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Сохранение модели")
+            message_box.setWindowIcon(QIcon("Resources/Icons/satellite_icon.png"))
+            message_box.setText("Модель успешно сохранена!")
+            message_box.setIcon(QMessageBox.Information)
+            message_box.setStandardButtons(QMessageBox.Ok)
+            message_box.exec()
 
     def pushButton_generate_clicked(self):
         print("PushButton generate clicked")
+        # mapdl = PyMAPDLModel()
+        # mapdl.start_mapdl()
+        # mapdl.stop_mapdl()
+        self.mapdl_model = SpiralStructureModel()
+        self.mapdl_model.run()
+        self.mapdl_model.stop_mapdl()
+
 
     def init_mesh_model(self):
         R1 = self.ui.doubleSpinBox_input_R1.value()
@@ -136,7 +148,6 @@ class MainWindowController(QMainWindow):
         )
         return shp_edge
 
-
     def compare_values(self):
         r1 = self.ui.doubleSpinBox_input_R1.value()
         r2 = self.ui.doubleSpinBox_input_R2.value()
@@ -149,29 +160,6 @@ class MainWindowController(QMainWindow):
 
         self.ui.label_geometric_params_model.setScaledContents(True)
 
-    def default_value_for_calculated_parameters(self):
-        self.ui.label_value_M_1.setText("Не рассчитано")
-        self.ui.label_value_M_2.setText("Не рассчитано")
-        self.ui.label_value_M_3.setText("Не рассчитано")
-        self.ui.label_value_M_4.setText("Не рассчитано")
-        self.ui.label_value_M_1.setStyleSheet("color: red;")
-        self.ui.label_value_M_2.setStyleSheet("color: red;")
-        self.ui.label_value_M_3.setStyleSheet("color: red;")
-        self.ui.label_value_M_4.setStyleSheet("color: red;")
+    def closeEvent(self, event):
+        self.mapdl_model.stop_mapdl()
 
-        self.ui.label_value_V_1.setText("Не рассчитано")
-        self.ui.label_value_V_2.setText("Не рассчитано")
-        self.ui.label_value_V_3.setText("Не рассчитано")
-        self.ui.label_value_V_4.setText("Не рассчитано")
-        self.ui.label_value_V_1.setStyleSheet("color: red;")
-        self.ui.label_value_V_2.setStyleSheet("color: red;")
-        self.ui.label_value_V_3.setStyleSheet("color: red;")
-        self.ui.label_value_V_4.setStyleSheet("color: red;")
-
-        self.ui.label_value_p_1.setText("Не рассчитано")
-        self.ui.label_value_p_2.setText("Не рассчитано")
-        self.ui.label_value_p_1.setStyleSheet("color: red;")
-        self.ui.label_value_p_2.setStyleSheet("color: red;")
-
-        self.ui.label_value_M.setText("Не рассчитано")
-        self.ui.label_value_M.setStyleSheet("color: red;")

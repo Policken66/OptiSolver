@@ -1,4 +1,4 @@
-from PySide6.QtGui import QDoubleValidator
+from PySide6.QtGui import QDoubleValidator, QIcon
 from PySide6.QtWidgets import QMainWindow
 
 from Ui.main_window import Ui_MainWindow
@@ -9,8 +9,11 @@ class MainWindowView(QMainWindow):
         super().__init__()  # Вызываем конструктор родительского класса
         self.ui = Ui_MainWindow()  # Создаем экземпляр UI
         self.ui.setupUi(self)  # Устанавливаем интерфейс
+
+        self.setWindowIcon(QIcon("Resources/Icons/satellite_icon.png"))
         self.setup_QSpinBox()
         self.setup_QDoubleSpinBox()
+        self.setup_default_value_for_calculated_parameters()
 
     def setup_QSpinBox(self):
 
@@ -92,3 +95,30 @@ class MainWindowView(QMainWindow):
             else:
                 spinbox.setSuffix(" Па")
                 spinbox.setRange(0.0, 1e12)  # До 1 триллиона Па doubleSpinBox_input_v_shp,
+
+    def setup_default_value_for_calculated_parameters(self):
+        self.ui.label_value_M_1.setText("Не рассчитано")
+        self.ui.label_value_M_2.setText("Не рассчитано")
+        self.ui.label_value_M_3.setText("Не рассчитано")
+        self.ui.label_value_M_4.setText("Не рассчитано")
+        self.ui.label_value_M_1.setStyleSheet("color: red;")
+        self.ui.label_value_M_2.setStyleSheet("color: red;")
+        self.ui.label_value_M_3.setStyleSheet("color: red;")
+        self.ui.label_value_M_4.setStyleSheet("color: red;")
+
+        self.ui.label_value_V_1.setText("Не рассчитано")
+        self.ui.label_value_V_2.setText("Не рассчитано")
+        self.ui.label_value_V_3.setText("Не рассчитано")
+        self.ui.label_value_V_4.setText("Не рассчитано")
+        self.ui.label_value_V_1.setStyleSheet("color: red;")
+        self.ui.label_value_V_2.setStyleSheet("color: red;")
+        self.ui.label_value_V_3.setStyleSheet("color: red;")
+        self.ui.label_value_V_4.setStyleSheet("color: red;")
+
+        self.ui.label_value_p_1.setText("Не рассчитано")
+        self.ui.label_value_p_2.setText("Не рассчитано")
+        self.ui.label_value_p_1.setStyleSheet("color: red;")
+        self.ui.label_value_p_2.setStyleSheet("color: red;")
+
+        self.ui.label_value_M.setText("Не рассчитано")
+        self.ui.label_value_M.setStyleSheet("color: red;")
