@@ -3,9 +3,7 @@ import numpy as np
 
 
 class SpiralStructureModel:
-    def __init__(self):
-        self.mapdl = None
-        self.parameters = {
+    test_parametrs = {
             'a11': 0.006,  # Геометрический параметр спирального ребра
             'b11': 0.03,  # Геометрический параметр спирального ребра
             'c': 0.003,  # Геометрический параметр кольцевого ребра
@@ -17,10 +15,17 @@ class SpiralStructureModel:
             'd': 2.560,  # Диаметр
             'HH': 5.585,  # Базовая высота
         }
+    def __init__(self, parametrs):
+        self.mapdl = None
+        self.parameters = parametrs
         self.parameters['tet'] = 360 / self.parameters['N']
         self.parameters['H'] = self.parameters['HH'] * (1 + 1 / self.parameters['m'])
+        print(self.parameters['H'])
+        print(self.parameters['m'])
         self.parameters['kk'] = self.parameters['H'] / self.parameters['m']
         self.keypoint_counter = 1  # Счетчик ключевых точек
+
+
 
     def run(self):
         try:
@@ -36,8 +41,8 @@ class SpiralStructureModel:
             self.create_geometry()  # Переходим к созданию геометрии
 
             # Визуализация
-            #self.mapdl.kplot(vtk=True, show_keypoint_numbering=True)
-            self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue')
+            self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
+            self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
 
         except Exception as e:
             print(f"Ошибка: {e}")
@@ -107,7 +112,6 @@ class SpiralStructureModel:
         p = self.parameters
         mapdl = self.mapdl
 
-        self.keypoint_counter += 1
         for i in range(1, p['N'] + 1):
             for s in range(1, p['m'] + 2):
                 # Вычисление координат для нижнего шпангоута

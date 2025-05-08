@@ -16,6 +16,8 @@ class MainWindowController(QMainWindow):
         self.ui = view.ui
         self.current_mesh_model = None
         self.mapdl_model = None
+        self.parametrs_for_mapdl_model = None
+
 
         # Обработка событий
         self.ui.doubleSpinBox_input_R1.valueChanged.connect(self.compare_values)
@@ -25,9 +27,26 @@ class MainWindowController(QMainWindow):
         self.ui.pushButton_save.clicked.connect(self.pushButton_save_clicked)
         self.ui.pushButton_generate.clicked.connect(self.pushButton_generate_clicked)
 
+        # Задание начальных данных
+        self.init_first_data()
+
     def pushButton_save_clicked(self):
         self.current_mesh_model = self.init_mesh_model()
         # Проверяем успешность создания
+
+        self.parametrs_for_mapdl_model = {
+                            'a11': self.ui.doubleSpinBox_input_height_spiral.value(),  # Геометрический параметр спирального ребра (высота)
+                            'b11': self.ui.doubleSpinBox_input_thinkness_spiral.value(),  # Геометрический параметр спирального ребра (толщина)
+                            'c': self.ui.doubleSpinBox_input_height_ring.value(),  # Геометрический параметр кольцевого ребра (высота)
+                            'dd': self.ui.doubleSpinBox_input_thinkness_ring.value(),  # Геометрический параметр кольцевого ребра (толщина)
+                            'a22': self.ui.doubleSpinBox_input_thinkness_shp.value(),  # Геометрический параметр шпангоута (толщина)
+                            'b22': self.ui.doubleSpinBox_input_height_shp.value(),  # Геометрический параметр шпангоута (высота)
+                            'N': self.ui.spinBox_input_N_spiral.value(),  # Количество спиральных ребер
+                            'm': int(self.ui.spinBox_input_N_ring.value()/2),  # Число ячеек по высоте (фиксированное значение, если не используется спинбокс)
+                            'd': (self.ui.doubleSpinBox_input_R1.value() + self.ui.doubleSpinBox_input_R2.value()) / 2,  # Диаметр (среднее значение R1 и R2)
+                            'HH': self.ui.doubleSpinBox_input_H.value(),  # Базовая высота
+                        }
+
         if self.current_mesh_model:
             # Создаем QMessageBox
             message_box = QMessageBox()
@@ -38,14 +57,25 @@ class MainWindowController(QMainWindow):
             message_box.setStandardButtons(QMessageBox.Ok)
             message_box.exec()
 
+
+
+
+
     def pushButton_generate_clicked(self):
         print("PushButton generate clicked")
-        # mapdl = PyMAPDLModel()
-        # mapdl.start_mapdl()
-        # mapdl.stop_mapdl()
-        self.mapdl_model = SpiralStructureModel()
-        self.mapdl_model.run()
-        self.mapdl_model.stop_mapdl()
+        if self.parametrs_for_mapdl_model is not None:
+            self.mapdl_model = SpiralStructureModel(self.parametrs_for_mapdl_model)
+            self.mapdl_model.run()
+            self.mapdl_model.stop_mapdl()
+        else:
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Генерация")
+            message_box.setWindowIcon(QIcon("Resources/Icons/satellite_icon.png"))
+            message_box.setText("Сохраните параметры перед запуском!")
+            message_box.setIcon(QMessageBox.Warning)
+            message_box.setStandardButtons(QMessageBox.Ok)
+            message_box.exec()
+
 
 
     def init_mesh_model(self):
@@ -162,4 +192,22 @@ class MainWindowController(QMainWindow):
 
     def closeEvent(self, event):
         self.mapdl_model.stop_mapdl()
+
+    def init_first_data(self):
+        self.ui.doubleSpinBox_input_R1.setValue(3.5)
+        self.ui.doubleSpinBox_input_R2.setValue(3.5)
+
+        self.ui.doubleSpinBox_input_H.setValue(5.585)
+
+        self.ui.doubleSpinBox_input_height_spiral.setValue(0.006)
+        self.ui.doubleSpinBox_input_thinkness_spiral.setValue(0.03)
+
+        self.ui.doubleSpinBox_input_height_ring.setValue(0.003)
+        self.ui.doubleSpinBox_input_thinkness_ring.setValue(0.03)
+
+        self.ui.doubleSpinBox_input_thinkness_shp.setValue(0.03)
+        self.ui.doubleSpinBox_input_height_shp.setValue(0.018)
+
+        self.ui.spinBox_input_N_spiral.setValue(30)
+        self.ui.spinBox_input_N_ring.setValue(7)
 
