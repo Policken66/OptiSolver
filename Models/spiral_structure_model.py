@@ -14,6 +14,7 @@ class SpiralStructureModel:
             'm': 7,  # Число ячеек по высоте
             'd': 2.560,  # Диаметр
             'HH': 5.585,  # Базовая высота
+            'alp':10, #угол наклона спирального ребра
         }
     def __init__(self, parametrs):
         self.mapdl = None
@@ -24,7 +25,7 @@ class SpiralStructureModel:
         print(self.parameters['m'])
         self.parameters['kk'] = self.parameters['H'] / self.parameters['m']
         self.keypoint_counter = 1  # Счетчик ключевых точек
-
+        print(self.parameters['alp'])
 
 
     def run(self):
@@ -39,6 +40,7 @@ class SpiralStructureModel:
             self.mapdl.csys(1)  # Цилиндрическая система координат
 
             self.create_geometry()  # Переходим к созданию геометрии
+            #self.create_finite_element() #Конечный элемент
 
             # Визуализация
             self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
@@ -188,7 +190,7 @@ class SpiralStructureModel:
 
                 z_min_2 = 0
                 z_max_2 = p['H'] / (p['m'] + 1) - (p['H'] / (p['m'] + 1)) * 0.3
-                mapdl.lsel("A", "LOC", "Z", z_min_2, z_max_2)
+                mapdl.lsel("A", "LOC", "Z", z_min_2, p['H'] / (p['m'] + 1) - (p['H'] / (p['m'] + 1)) * 0.3)
 
         # --- Часть 3: Удаление лишних точек и линий ---
         print("Удаление лишних точек и линий...")
@@ -205,3 +207,36 @@ class SpiralStructureModel:
             print("MAPDL успешно остановлен.")
         else:
             print("MAPDL не был запущен.")
+
+    def create_finite_element(self ):
+        print("Создание конечного элемента")
+        mapdl=self.mapdl
+        # 1. Определяем тип элемента
+        mapdl.et(1, "BEAM188")
+
+        # 2. Задаем материал (модуль Юнга)
+        mapdl.mp("EX", 1, 2.1e11)  # Модуль упругости стали ~210 ГПа
+
+        # 3. Задаем поперечное сечение (например, круглое)
+        mapdl.sectype(1, "BEAM", "CSOLID")  # Сплошное круглое сечение
+        mapdl.secdata(0.01)  # Радиус круглого сечения = 0.01 м
+
+        # 4. Создаем две ключевые точки
+        mapdl.k(1, 0, 0, 0)
+        mapdl.k(2, 1, 0, 0)
+
+        # 5. Создаем линию между ними
+        mapdl.l(1, 2)
+
+        # 6. Устанавливаем тип элемента и сечение
+        mapdl.type(1)
+        mapdl.real(1)
+        mapdl.mat(1)
+        mapdl.secnum(1)
+
+        # 7. Разбиваем линию на один элемент
+        mapdl.lesize("ALL","","",2,"","")  # Длина элемента
+        mapdl.lmesh(1)  # Мешинг линии
+
+        # Визуализация сетки
+        mapdl.eplot(vtk=True, show_node_numbering=True, color='blue', background='white')

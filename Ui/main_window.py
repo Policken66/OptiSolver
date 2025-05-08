@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(965, 639)
+        MainWindow.resize(965, 642)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
         self.groupBox_10.setMinimumSize(QSize(0, 315))
         self.layoutWidget = QWidget(self.groupBox_10)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(10, 16, 141, 304))
+        self.layoutWidget.setGeometry(QRect(10, 16, 328, 304))
         self.verticalLayout = QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -734,77 +734,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.horizontalLayout_46, 2, 2, 1, 1)
 
-        self.groupBox = QGroupBox(self.centralwidget)
-        self.groupBox.setObjectName(u"groupBox")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        self.groupBox.setSizePolicy(sizePolicy4)
-        self.horizontalLayoutWidget_4 = QWidget(self.groupBox)
-        self.horizontalLayoutWidget_4.setObjectName(u"horizontalLayoutWidget_4")
-        self.horizontalLayoutWidget_4.setGeometry(QRect(10, 30, 251, 25))
-        self.horizontalLayout_4 = QHBoxLayout(self.horizontalLayoutWidget_4)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.horizontalLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.label_N = QLabel(self.horizontalLayoutWidget_4)
-        self.label_N.setObjectName(u"label_N")
-
-        self.horizontalLayout_4.addWidget(self.label_N)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_4.addItem(self.horizontalSpacer)
-
-        self.spinBox_input_N_spiral = QSpinBox(self.horizontalLayoutWidget_4)
-        self.spinBox_input_N_spiral.setObjectName(u"spinBox_input_N_spiral")
-
-        self.horizontalLayout_4.addWidget(self.spinBox_input_N_spiral)
-
-        self.horizontalLayoutWidget_5 = QWidget(self.groupBox)
-        self.horizontalLayoutWidget_5.setObjectName(u"horizontalLayoutWidget_5")
-        self.horizontalLayoutWidget_5.setGeometry(QRect(9, 60, 251, 25))
-        self.horizontalLayout_5 = QHBoxLayout(self.horizontalLayoutWidget_5)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.label_m = QLabel(self.horizontalLayoutWidget_5)
-        self.label_m.setObjectName(u"label_m")
-
-        self.horizontalLayout_5.addWidget(self.label_m)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_5.addItem(self.horizontalSpacer_2)
-
-        self.spinBox_input_N_ring = QSpinBox(self.horizontalLayoutWidget_5)
-        self.spinBox_input_N_ring.setObjectName(u"spinBox_input_N_ring")
-
-        self.horizontalLayout_5.addWidget(self.spinBox_input_N_ring)
-
-        self.horizontalLayoutWidget_6 = QWidget(self.groupBox)
-        self.horizontalLayoutWidget_6.setObjectName(u"horizontalLayoutWidget_6")
-        self.horizontalLayoutWidget_6.setGeometry(QRect(10, 90, 251, 25))
-        self.horizontalLayout_6 = QHBoxLayout(self.horizontalLayoutWidget_6)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.label_m_shp = QLabel(self.horizontalLayoutWidget_6)
-        self.label_m_shp.setObjectName(u"label_m_shp")
-
-        self.horizontalLayout_6.addWidget(self.label_m_shp)
-
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_6.addItem(self.horizontalSpacer_3)
-
-        self.spinBox_input_N_shp = QSpinBox(self.horizontalLayoutWidget_6)
-        self.spinBox_input_N_shp.setObjectName(u"spinBox_input_N_shp")
-
-        self.horizontalLayout_6.addWidget(self.spinBox_input_N_shp)
-
-
-        self.gridLayout.addWidget(self.groupBox, 1, 2, 1, 1)
-
         self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
         sizePolicy1.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
@@ -1018,6 +947,97 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButton_generate, 3, 2, 1, 1)
 
+        self.groupBox = QGroupBox(self.centralwidget)
+        self.groupBox.setObjectName(u"groupBox")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
+        self.groupBox.setSizePolicy(sizePolicy4)
+        self.horizontalLayoutWidget_4 = QWidget(self.groupBox)
+        self.horizontalLayoutWidget_4.setObjectName(u"horizontalLayoutWidget_4")
+        self.horizontalLayoutWidget_4.setGeometry(QRect(10, 30, 251, 25))
+        self.horizontalLayout_4 = QHBoxLayout(self.horizontalLayoutWidget_4)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label_N = QLabel(self.horizontalLayoutWidget_4)
+        self.label_N.setObjectName(u"label_N")
+
+        self.horizontalLayout_4.addWidget(self.label_N)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer)
+
+        self.spinBox_input_N_spiral = QSpinBox(self.horizontalLayoutWidget_4)
+        self.spinBox_input_N_spiral.setObjectName(u"spinBox_input_N_spiral")
+
+        self.horizontalLayout_4.addWidget(self.spinBox_input_N_spiral)
+
+        self.horizontalLayoutWidget_5 = QWidget(self.groupBox)
+        self.horizontalLayoutWidget_5.setObjectName(u"horizontalLayoutWidget_5")
+        self.horizontalLayoutWidget_5.setGeometry(QRect(9, 60, 251, 25))
+        self.horizontalLayout_5 = QHBoxLayout(self.horizontalLayoutWidget_5)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.label_m = QLabel(self.horizontalLayoutWidget_5)
+        self.label_m.setObjectName(u"label_m")
+
+        self.horizontalLayout_5.addWidget(self.label_m)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_5.addItem(self.horizontalSpacer_2)
+
+        self.spinBox_input_N_ring = QSpinBox(self.horizontalLayoutWidget_5)
+        self.spinBox_input_N_ring.setObjectName(u"spinBox_input_N_ring")
+
+        self.horizontalLayout_5.addWidget(self.spinBox_input_N_ring)
+
+        self.horizontalLayoutWidget_6 = QWidget(self.groupBox)
+        self.horizontalLayoutWidget_6.setObjectName(u"horizontalLayoutWidget_6")
+        self.horizontalLayoutWidget_6.setGeometry(QRect(10, 90, 251, 25))
+        self.horizontalLayout_6 = QHBoxLayout(self.horizontalLayoutWidget_6)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.label_m_shp = QLabel(self.horizontalLayoutWidget_6)
+        self.label_m_shp.setObjectName(u"label_m_shp")
+
+        self.horizontalLayout_6.addWidget(self.label_m_shp)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_3)
+
+        self.spinBox_input_N_shp = QSpinBox(self.horizontalLayoutWidget_6)
+        self.spinBox_input_N_shp.setObjectName(u"spinBox_input_N_shp")
+
+        self.horizontalLayout_6.addWidget(self.spinBox_input_N_shp)
+
+        self.horizontalLayoutWidget_13 = QWidget(self.groupBox)
+        self.horizontalLayoutWidget_13.setObjectName(u"horizontalLayoutWidget_13")
+        self.horizontalLayoutWidget_13.setGeometry(QRect(10, 120, 251, 25))
+        self.horizontalLayout_47 = QHBoxLayout(self.horizontalLayoutWidget_13)
+        self.horizontalLayout_47.setObjectName(u"horizontalLayout_47")
+        self.horizontalLayout_47.setContentsMargins(0, 0, 0, 0)
+        self.label_alp = QLabel(self.horizontalLayoutWidget_13)
+        self.label_alp.setObjectName(u"label_alp")
+
+        self.horizontalLayout_47.addWidget(self.label_alp)
+
+        self.horizontalSpacer_45 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_47.addItem(self.horizontalSpacer_45)
+
+        self.spinBox_input_alp = QSpinBox(self.horizontalLayoutWidget_13)
+        self.spinBox_input_alp.setObjectName(u"spinBox_input_alp")
+
+        self.horizontalLayout_47.addWidget(self.spinBox_input_alp)
+
+
+        self.gridLayout.addWidget(self.groupBox, 1, 2, 1, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -1077,10 +1097,6 @@ class Ui_MainWindow(object):
         self.label_v_shp.setText(QCoreApplication.translate("MainWindow", u"v", None))
         self.pushButton_save.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b", None))
         self.pushButton_example.setText(QCoreApplication.translate("MainWindow", u"\u041f\u0440\u0438\u043c\u0435\u0440", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u041f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b \u0434\u043b\u044f \u0438\u0441\u0445\u043e\u0434\u043d\u043e\u0439 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438", None))
-        self.label_N.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u0441\u043b\u043e \u0441\u043f\u0438\u0440\u0430\u043b\u044c\u043d\u044b\u0445 \u0440\u0435\u0431\u0435\u0440", None))
-        self.label_m.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u0441\u043b\u043e \u043a\u043e\u043b\u044c\u0446\u0435\u0432\u044b\u0445 \u0440\u0435\u0431\u0435\u0440", None))
-        self.label_m_shp.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u043b\u043e \u0448\u043f\u0430\u043d\u0433\u043e\u0443\u0442\u043e\u0432", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"\u041f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b \u0440\u0435\u0431\u0435\u0440\u043d\u043e\u0439 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u044b", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0438\u0440\u0430\u043b\u044c\u043d\u044b\u0435 \u0440\u0435\u0431\u0440\u0430", None))
         self.label_a_sp.setText(QCoreApplication.translate("MainWindow", u"\u0422\u043e\u043b\u0449\u0438\u043d\u0430 \u0440\u0435\u0431\u0440\u0430", None))
@@ -1097,5 +1113,10 @@ class Ui_MainWindow(object):
         self.label_R2.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0430\u0434\u0438\u0443\u0441 \u043d\u0438\u0436\u043d\u0435\u0439 \u043a\u0440\u043e\u043c\u043a\u0438", None))
         self.label_H.setText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0441\u043e\u0442\u0430 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438", None))
         self.pushButton_generate.setText(QCoreApplication.translate("MainWindow", u"\u0413\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u041f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b \u0434\u043b\u044f \u0438\u0441\u0445\u043e\u0434\u043d\u043e\u0439 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0438", None))
+        self.label_N.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u0441\u043b\u043e \u0441\u043f\u0438\u0440\u0430\u043b\u044c\u043d\u044b\u0445 \u0440\u0435\u0431\u0435\u0440", None))
+        self.label_m.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u0441\u043b\u043e \u043a\u043e\u043b\u044c\u0446\u0435\u0432\u044b\u0445 \u0440\u0435\u0431\u0435\u0440", None))
+        self.label_m_shp.setText(QCoreApplication.translate("MainWindow", u"\u0427\u0438\u0441\u043b\u043e \u0448\u043f\u0430\u043d\u0433\u043e\u0443\u0442\u043e\u0432", None))
+        self.label_alp.setText(QCoreApplication.translate("MainWindow", u"\u0423\u0433\u043e\u043b", None))
     # retranslateUi
 

@@ -45,6 +45,7 @@ class MainWindowController(QMainWindow):
                             'm': int(self.ui.spinBox_input_N_ring.value()/2),  # Число ячеек по высоте (фиксированное значение, если не используется спинбокс)
                             'd': (self.ui.doubleSpinBox_input_R1.value() + self.ui.doubleSpinBox_input_R2.value()) / 2,  # Диаметр (среднее значение R1 и R2)
                             'HH': self.ui.doubleSpinBox_input_H.value(),  # Базовая высота
+                            'alp':self.ui.spinBox_input_alp.value(),  # угол наклона спирального ребра
                         }
 
         if self.current_mesh_model:
