@@ -1,5 +1,5 @@
 from ansys.mapdl.core import launch_mapdl
-import numpy as np
+
 
 
 class SpiralStructureModel:
@@ -26,6 +26,7 @@ class SpiralStructureModel:
         self.parameters['kk'] = self.parameters['H'] / self.parameters['m']
         self.keypoint_counter = 1  # Счетчик ключевых точек
         print(self.parameters['alp'])
+        self.node_counter=1 #счетчик для узлов
 
 
     def run(self):
@@ -35,16 +36,20 @@ class SpiralStructureModel:
 
             self.mapdl.units("SI")  # Используем единицы СИ
             self.mapdl.pnum("KP", 0)  # Отключаем отображение номеров точек
-            self.mapdl.pnum("LINE", 0)  # Отключаем отображение номеров линий
+            self.mapdl.pnum("LINE", 1)  # Отключаем отображение номеров линий
             self.mapdl.prep7()  # Открытие препроцессора
             self.mapdl.csys(1)  # Цилиндрическая система координат
 
             self.create_geometry()  # Переходим к созданию геометрии
-            #self.create_finite_element() #Конечный элемент
+            #self.create_node() #создание узлов
+            self.create_finite_element() #Конечный элемент
 
             # Визуализация
-            self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
-            self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
+           # self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
+           # self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
+           # self.mapdl.nplot(vtk=True,show_node_numbering=False, color='black',background='white')
+            self.mapdl.eplot(vtk=True, show_node_numbering=False, color='black', background='white')
+
 
         except Exception as e:
             print(f"Ошибка: {e}")
@@ -126,6 +131,10 @@ class SpiralStructureModel:
                 mapdl.k(self.keypoint_counter, p['d'] / 2, p['tet'] * i, z_upper)
                 self.keypoint_counter += 1
 
+                mapdl.n(self.node_counter+1,p['d']/2,p['tet']*i,p['H']-p['H']/(p['m']+1)*0.28)
+                self.node_counter += 1
+                mapdl.n(1,0,0,p['H']-p['H']/(p['m']+1)*0.28)
+
     def create_ring(self):
         """Создание кольцевых ребер"""
         p = self.parameters
@@ -190,7 +199,7 @@ class SpiralStructureModel:
 
                 z_min_2 = 0
                 z_max_2 = p['H'] / (p['m'] + 1) - (p['H'] / (p['m'] + 1)) * 0.3
-                mapdl.lsel("A", "LOC", "Z", z_min_2, p['H'] / (p['m'] + 1) - (p['H'] / (p['m'] + 1)) * 0.3)
+                mapdl.lsel("A", "LOC", "Z", z_min_2,  z_max_2)
 
         # --- Часть 3: Удаление лишних точек и линий ---
         print("Удаление лишних точек и линий...")
@@ -208,35 +217,112 @@ class SpiralStructureModel:
         else:
             print("MAPDL не был запущен.")
 
+
     def create_finite_element(self ):
+        p = self.parameters
         print("Создание конечного элемента")
         mapdl=self.mapdl
         # 1. Определяем тип элемента
-        mapdl.et(1, "BEAM188")
+        mapdl.et(1, "BEAM4")
+        mapdl.keyopt(1,6,0)
+        mapdl.keyopt(1,7,0)
+        mapdl.keyopt(1, 9, 0)
+        mapdl.keyopt(1, 10, 0)
+
+        mapdl.mp("EX", 1, 2.1e11)  # Модуль упругости стали ~210 ГПа
+        mapdl.mp("DENS", 1, 1781)
+        mapdl.mp("PRXY", 1, 0.3)
+        mapdl.uimp(1,"EX","DENS","PRXY",2.1e11,1781,0.3)
+        mapdl.r(1,"r1","r2","r3","r4","r5","r6")
+        mapdl.rmore("r7","r8","r9")
+
+        mapdl.r(1,p['a11']*p['b11'],(p['a11']*p['b11']*['b11']*['b11'])/12,(p['b11']*p['a11']*p['a11']*p['a11'])/12)
+        mapdl.sectype(1, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
+        mapdl.secofest("CENT")
+        mapdl.secdata("a11", "b11", 5, 5)  # Радиус круглого сечения = 0.01 м
+
+
+        mapdl.et(2, "BEAM4")
+        mapdl.keyopt(2, 6, 0)
+        mapdl.keyopt(2, 7, 0)
+        mapdl.keyopt(2, 9, 0)
+        mapdl.keyopt(2, 10, 0)
 
         # 2. Задаем материал (модуль Юнга)
-        mapdl.mp("EX", 1, 2.1e11)  # Модуль упругости стали ~210 ГПа
+        mapdl.mp("EX", 2, 2.1e11)  # Модуль упругости стали ~210 ГПа
+        mapdl.mp("DENS", 2, 1781)
+        mapdl.mp("PRXY", 2, 0.3)
+        mapdl.uimp(2, "EX", "DENS", "PRXY", 2.1e11, 1781, 0.3)
+        mapdl.r(2, "r1", "r2", "r3", "r4", "r5", "r6")
+        mapdl.rmore("r7", "r8", "r9")
+
+        mapdl.r(2, p['a22'] * p['b22'], (p['a22'] * p['b22'] * ['b22'] * ['b22']) / 12,
+                (p['b22'] * p['a22'] * p['a22'] * p['a22']) / 12)
+
+        mapdl.sectype(2, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
+        mapdl.secofest("CENT")
+        mapdl.secdata("a22", "b22", 5, 5)  # Радиус круглого сечения = 0.01 м
+
+
+        mapdl.et(3, "BEAM4")
+        mapdl.keyopt(3, 6, 0)
+        mapdl.keyopt(3, 7, 0)
+        mapdl.keyopt(3, 9, 0)
+        mapdl.keyopt(3, 10, 0)
+
+        mapdl.mp("EX", 3, 2.1e11)  # Модуль упругости стали ~210 ГПа
+        mapdl.mp("DENS", 3, 1781)
+        mapdl.mp("PRXY", 3, 0.3)
+        mapdl.uimp(3, "EX", "DENS", "PRXY", 2.1e11, 1781, 0.3)
+        mapdl.r(3, "r1", "r2", "r3", "r4", "r5", "r6")
+        mapdl.rmore("r7", "r8", "r9")
+
+        mapdl.r(3, p['c'] * p['d'], (p['c'] * p['d'] * ['d'] * ['d']) / 12,
+                (p['d'] * p['c'] * p['c'] * p['c']) / 12)
+
+        mapdl.sectype(3, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
+        mapdl.secofest("CENT")
+        mapdl.secdata("c", "d", 5, 5)  # Радиус круглого сечения = 0.01 м
+
+        mapdl.et(4, "MPC184")
+        mapdl.keyopt(4, 1, 1)
+
+        mapdl.lsel("S", "", "", "ALL")  # Выделяем все линии
+        mapdl.esel("s")
+        #выделение спиральных ребер тип КЭ -1
+        for i in range(1, p['m']-1):
+            for s in range(2, 2 * p['m']):
+
+                mapdl.lsel("U", "LOC", "Z",p['H']*s/(p["m"]*2)+p['H']/(4*p['m']))
+                mapdl.lsel("U", "LOC", "Z", p['H']/ (p["m"] +1) - p['H'] / ( p['m']+1))*0.28
+                mapdl.lsel("U", "LOC", "Z", p['H']-p['H']*0.28/(p['m']+1))
+               # mapdl.allsel("ALL")
+                mapdl.lesize("ALL","","",2,"","")
+                mapdl.type(1)
+                mapdl.real(1)
+                mapdl.mat(1)
+                mapdl.secnum(1)
+                mapdl.latt(1,1,1,"","","",1)
+                mapdl.lmesh("ALL")
+
+
+
 
         # 3. Задаем поперечное сечение (например, круглое)
-        mapdl.sectype(1, "BEAM", "CSOLID")  # Сплошное круглое сечение
-        mapdl.secdata(0.01)  # Радиус круглого сечения = 0.01 м
 
-        # 4. Создаем две ключевые точки
-        mapdl.k(1, 0, 0, 0)
-        mapdl.k(2, 1, 0, 0)
 
-        # 5. Создаем линию между ними
-        mapdl.l(1, 2)
+
+
 
         # 6. Устанавливаем тип элемента и сечение
-        mapdl.type(1)
-        mapdl.real(1)
-        mapdl.mat(1)
-        mapdl.secnum(1)
+       # mapdl.type(1)
+        #mapdl.real(1)
+        #mapdl.mat(1)
+       # mapdl.secnum(1)
 
         # 7. Разбиваем линию на один элемент
-        mapdl.lesize("ALL","","",2,"","")  # Длина элемента
-        mapdl.lmesh(1)  # Мешинг линии
+       # mapdl.lesize("ALL","","",2,"","")  # Длина элемента
+          # Мешинг линии
 
         # Визуализация сетки
-        mapdl.eplot(vtk=True, show_node_numbering=True, color='blue', background='white')
+                # mapdl.eplot(vtk=True, show_node_numbering=True, color='blue', background='white')
