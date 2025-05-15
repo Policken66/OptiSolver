@@ -48,7 +48,7 @@ class SpiralStructureModel:
            # self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
            # self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
            # self.mapdl.nplot(vtk=True,show_node_numbering=False, color='black',background='white')
-            self.mapdl.eplot(vtk=True, show_node_numbering=False, color='black', background='white')
+            self.mapdl.eplot(vtk=True, show_element_numbering=False, color='black', background='white')
 
 
         except Exception as e:
@@ -236,10 +236,10 @@ class SpiralStructureModel:
         mapdl.r(1,"r1","r2","r3","r4","r5","r6")
         mapdl.rmore("r7","r8","r9")
 
-        mapdl.r(1,p['a11']*p['b11'],(p['a11']*p['b11']*['b11']*['b11'])/12,(p['b11']*p['a11']*p['a11']*p['a11'])/12)
+        mapdl.r(1,p['a11']*p['b11'],(p['a11']*p['b11']*p['b11']*p['b11'])/12,(p['b11']*p['a11']*p['a11']*p['a11'])/12)
         mapdl.sectype(1, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        mapdl.secofest("CENT")
-        mapdl.secdata("a11", "b11", 5, 5)  # Радиус круглого сечения = 0.01 м
+        #mapdl.secofest("CENT")
+        mapdl.secdata(p["a11"], p["b11"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
 
         mapdl.et(2, "BEAM4")
@@ -256,12 +256,12 @@ class SpiralStructureModel:
         mapdl.r(2, "r1", "r2", "r3", "r4", "r5", "r6")
         mapdl.rmore("r7", "r8", "r9")
 
-        mapdl.r(2, p['a22'] * p['b22'], (p['a22'] * p['b22'] * ['b22'] * ['b22']) / 12,
+        mapdl.r(2, p['a22'] * p['b22'], (p['a22'] * p['b22'] *p['b22'] * p['b22']) / 12,
                 (p['b22'] * p['a22'] * p['a22'] * p['a22']) / 12)
 
         mapdl.sectype(2, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        mapdl.secofest("CENT")
-        mapdl.secdata("a22", "b22", 5, 5)  # Радиус круглого сечения = 0.01 м
+        #mapdl.secofest("CENT")
+        mapdl.secdata(p["a22"], p["b22"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
 
         mapdl.et(3, "BEAM4")
@@ -277,32 +277,33 @@ class SpiralStructureModel:
         mapdl.r(3, "r1", "r2", "r3", "r4", "r5", "r6")
         mapdl.rmore("r7", "r8", "r9")
 
-        mapdl.r(3, p['c'] * p['d'], (p['c'] * p['d'] * ['d'] * ['d']) / 12,
+        mapdl.r(3, p['c'] * p['d'], (p['c'] * p['d'] * p['d'] * p['d']) / 12,
                 (p['d'] * p['c'] * p['c'] * p['c']) / 12)
 
         mapdl.sectype(3, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        mapdl.secofest("CENT")
-        mapdl.secdata("c", "d", 5, 5)  # Радиус круглого сечения = 0.01 м
+        #mapdl.secofest("CENT")
+        mapdl.secdata(p["c"], p["d"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
         mapdl.et(4, "MPC184")
         mapdl.keyopt(4, 1, 1)
 
+
+        #mapdl.esel("s")
         mapdl.lsel("S", "", "", "ALL")  # Выделяем все линии
-        mapdl.esel("s")
         #выделение спиральных ребер тип КЭ -1
-        for i in range(1, p['m']-1):
+        for i in range(1, 3):
             for s in range(2, 2 * p['m']):
 
-                mapdl.lsel("U", "LOC", "Z",p['H']*s/(p["m"]*2)+p['H']/(4*p['m']))
-                mapdl.lsel("U", "LOC", "Z", p['H']/ (p["m"] +1) - p['H'] / ( p['m']+1))*0.28
-                mapdl.lsel("U", "LOC", "Z", p['H']-p['H']*0.28/(p['m']+1))
-               # mapdl.allsel("ALL")
+                #mapdl.lsel("U", "LOC", "Z",p['H']*s/(p["m"]*2)+p['H']/(4*p['m']))
+                #mapdl.lsel("U", "LOC", "Z", p['H']/ (p["m"] +1) - p['H'] / ( p['m']+1)*0.28)
+                #mapdl.lsel("U", "LOC", "Z", p['H']-p['H']*0.28/(p['m']+1))
+                mapdl.allsel("ALL")
                 mapdl.lesize("ALL","","",2,"","")
-                mapdl.type(1)
-                mapdl.real(1)
-                mapdl.mat(1)
-                mapdl.secnum(1)
-                mapdl.latt(1,1,1,"","","",1)
+               # mapdl.type(1)
+               # mapdl.real(1)
+               # mapdl.mat(1)
+               #mapdl.secnum(1)
+                mapdl.latt(1,1,1,"","",1)
                 mapdl.lmesh("ALL")
 
 
