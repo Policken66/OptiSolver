@@ -35,19 +35,21 @@ class SpiralStructureModel:
             self.mapdl.clear()  # Очистка результатов прошлых расчетов
 
             self.mapdl.units("SI")  # Используем единицы СИ
-            self.mapdl.pnum("KP", 0)  # Отключаем отображение номеров точек
+            self.mapdl.pnum("KP", 1)  # Отключаем отображение номеров точек
             self.mapdl.pnum("LINE", 1)  # Отключаем отображение номеров линий
             self.mapdl.prep7()  # Открытие препроцессора
             self.mapdl.csys(1)  # Цилиндрическая система координат
 
             self.create_geometry()  # Переходим к созданию геометрии
             #self.create_node() #создание узлов
-            self.create_finite_element() #Конечный элемент
+            self.create_finite_type_element() #Конечный элемент
+            #self.create_finite_element()  # Конечный элемент
+            #self.element_intersections()
 
             # Визуализация
-           # self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
-           # self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
-           # self.mapdl.nplot(vtk=True,show_node_numbering=False, color='black',background='white')
+            self.mapdl.kplot(vtk=True, show_keypoint_numbering=False, color='blue', background='white')
+            self.mapdl.lplot(vtk=True, show_line_numbering=False, color='blue', background='white')
+            self.mapdl.nplot(vtk=True,show_node_numbering=False, color='black',background='white')
             self.mapdl.eplot(vtk=True, show_element_numbering=False, color='black', background='white')
 
 
@@ -60,6 +62,8 @@ class SpiralStructureModel:
         self.create_shpangout()
         self.create_ring()
         self.line_intersections()
+        self.create_finite_element()
+       # self.element_intersections()
 
     def create_spiral(self):
         """Создание спиральных ребер"""
@@ -218,9 +222,9 @@ class SpiralStructureModel:
             print("MAPDL не был запущен.")
 
 
-    def create_finite_element(self ):
+    def create_finite_type_element(self ):
         p = self.parameters
-        print("Создание конечного элемента")
+        print("Задание типа конечного элемента")
         mapdl=self.mapdl
         # 1. Определяем тип элемента
         mapdl.et(1, "BEAM4")
@@ -238,7 +242,7 @@ class SpiralStructureModel:
 
         mapdl.r(1,p['a11']*p['b11'],(p['a11']*p['b11']*p['b11']*p['b11'])/12,(p['b11']*p['a11']*p['a11']*p['a11'])/12)
         mapdl.sectype(1, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        #mapdl.secofest("CENT")
+       # mapdl.secofest("CENT")
         mapdl.secdata(p["a11"], p["b11"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
 
@@ -260,7 +264,8 @@ class SpiralStructureModel:
                 (p['b22'] * p['a22'] * p['a22'] * p['a22']) / 12)
 
         mapdl.sectype(2, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        #mapdl.secofest("CENT")
+        #mapdl.secofest("CENT","","","","","","","")
+        #SECOFFSET, Location, OFFSET1, OFFSET2, CG-Y, CG-Z, SH-Y, SH-Z
         mapdl.secdata(p["a22"], p["b22"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
 
@@ -281,49 +286,52 @@ class SpiralStructureModel:
                 (p['d'] * p['c'] * p['c'] * p['c']) / 12)
 
         mapdl.sectype(3, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-        #mapdl.secofest("CENT")
+       # mapdl.secofest("CENT")
         mapdl.secdata(p["c"], p["d"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
         mapdl.et(4, "MPC184")
         mapdl.keyopt(4, 1, 1)
 
+    def create_finite_element(self):
+        """Создание кольцевых ребер"""
+        p = self.parameters
+        mapdl = self.mapdl
 
-        #mapdl.esel("s")
-        mapdl.lsel("S", "", "", "ALL")  # Выделяем все линии
-        #выделение спиральных ребер тип КЭ -1
-        for i in range(1, 3):
-            for s in range(2, 2 * p['m']):
+        mapdl.lsel("S", "", "", "ALL")
 
-                #mapdl.lsel("U", "LOC", "Z",p['H']*s/(p["m"]*2)+p['H']/(4*p['m']))
-                #mapdl.lsel("U", "LOC", "Z", p['H']/ (p["m"] +1) - p['H'] / ( p['m']+1)*0.28)
-                #mapdl.lsel("U", "LOC", "Z", p['H']-p['H']*0.28/(p['m']+1))
-                mapdl.allsel("ALL")
-                mapdl.lesize("ALL","","",2,"","")
-               # mapdl.type(1)
-               # mapdl.real(1)
-               # mapdl.mat(1)
-               #mapdl.secnum(1)
+        # Создание точек для кольцевых ребер
+        for i in range(2, p['m'] - 1):
+            for s in range(2, 2 * p['m'] ):
+                # Вычисление координат для точки
+                mapdl.lsel("U","LOC" ,"Z",p["H"]/(p["m"]+1)-p["H"]*0.28/(p["m"]+1))
+                mapdl.lsel("U", "LOC", "Z", p['H']*s/(2*p["m"])+p["H"]/(4*p["m"]))
+                mapdl.lsel("U","LOC","Z",p["H"]-p["H"]*0.28/(p["m"]+1))
+
+                mapdl.lesize("ALL","","",5,"","")
                 mapdl.latt(1,1,1,"","",1)
-                mapdl.lmesh("ALL")
+
+        for i in range(2, p['m'] - 2):
+              for s in range(2, 2 * p['m']):
+            # Вычисление координат для точки
+                mapdl.lsel("A", "LOC", "Z", p["H"]*s / (2*p["m"]) + p["H"] / (4*p["m"]))
+        mapdl.lesize("ALL", "", "", 5, "", "")
+        mapdl.latt(3, 3, 3, "", "", 3)
+
+        #mapdl.lsel("ALL")
+        mapdl.lsel("NONE")
+        mapdl.lsel("S", "LOC", "Z", p["H"]/ (p["m"]+1)-(p["H"]*0.28/(p["m"]+1)))
+        mapdl.lsel("A","LOC","Z",p["H"]-p["H"]*0.28/(p["m"]+1))
+        mapdl.lesize("ALL", "", "", 5, "", "")
+        mapdl.latt(2, 2, 2, "", "", 2)
+        mapdl.allsel("ALL")
+        mapdl.lmesh("ALL")
+
+        for i in range(1, p['N']):
+            mapdl.e("1",(i-1)*2)
 
 
 
 
-        # 3. Задаем поперечное сечение (например, круглое)
 
 
 
-
-
-        # 6. Устанавливаем тип элемента и сечение
-       # mapdl.type(1)
-        #mapdl.real(1)
-        #mapdl.mat(1)
-       # mapdl.secnum(1)
-
-        # 7. Разбиваем линию на один элемент
-       # mapdl.lesize("ALL","","",2,"","")  # Длина элемента
-          # Мешинг линии
-
-        # Визуализация сетки
-                # mapdl.eplot(vtk=True, show_node_numbering=True, color='blue', background='white')
