@@ -30,6 +30,19 @@ class SpiralStructureModel:
 
 
     def run(self):
+        self.test_2()
+
+    def test_2(self):
+        work_dir_path = "C:\\rb\\no\\work_dir"
+        self.mapdl = launch_mapdl(run_location=work_dir_path, override=True)
+        script_path = "C:\\rb\\no\\shell.txt"
+        self.mapdl.input(script_path)
+
+        print(self.mapdl.list_files())
+
+        self.mapdl.finish()
+
+    def test_1(self):
         try:
             self.mapdl = launch_mapdl()
             self.mapdl.clear()  # Очистка результатов прошлых расчетов
@@ -129,7 +142,6 @@ class SpiralStructureModel:
                 z_lower = p['H'] / (p['m'] + 1) - (p['H'] / (p['m'] + 1)) * 0.28
                 mapdl.k(self.keypoint_counter, p['d'] / 2, p['tet'] * i, z_lower)
                 self.keypoint_counter += 1
-
                 # Вычисление координаты для верхнего шпангоута
                 z_upper = p['H'] - (p['H'] / (p['m'] + 1)) * 0.28
                 mapdl.k(self.keypoint_counter, p['d'] / 2, p['tet'] * i, z_upper)
@@ -286,7 +298,7 @@ class SpiralStructureModel:
                 (p['d'] * p['c'] * p['c'] * p['c']) / 12)
 
         mapdl.sectype(3, "BEAM", "RECT", "MyName", 0)  # квадратное сечение
-       # mapdl.secofest("CENT")
+       # mapdl.sec ofest("CENT")
         mapdl.secdata(p["c"], p["d"], 5, 5)  # Радиус круглого сечения = 0.01 м
 
         mapdl.et(4, "MPC184")
@@ -324,10 +336,12 @@ class SpiralStructureModel:
         mapdl.lesize("ALL", "", "", 5, "", "")
         mapdl.latt(2, 2, 2, "", "", 2)
         mapdl.allsel("ALL")
-        mapdl.lmesh("ALL")
+        #mapdl.lmesh(1)
+        #mapdl.lmesh(2)
+        #mapdl.lmesh(3)
 
-        for i in range(1, p['N']):
-            mapdl.e("1",(i-1)*2)
+      #  for i in range(1, p['N']):
+        mapdl.e("1","2","","","","","","")
 
 
 

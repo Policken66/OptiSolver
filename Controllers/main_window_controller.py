@@ -212,3 +212,5 @@ class MainWindowController(QMainWindow):
         self.ui.spinBox_input_N_spiral.setValue(30)
         self.ui.spinBox_input_N_ring.setValue(7)
 
+
+
