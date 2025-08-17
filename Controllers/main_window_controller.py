@@ -5,7 +5,6 @@ from ansys.mapdl.core import launch_mapdl
 from Models.edge_model import EdgeModel
 from Models.mesh_model import MeshModel
 from Models.spiral_structure_model import SpiralStructureModel
-from Utils.MAPDL import PyMAPDLModel
 from Views.main_window_view import MainWindowView
 
 
@@ -47,6 +46,8 @@ class MainWindowController(QMainWindow):
                             'HH': self.ui.doubleSpinBox_input_H.value(),  # Базовая высота
                             'alp':self.ui.spinBox_input_alp.value(),  # угол наклона спирального ребра
                         }
+
+
 
         if self.current_mesh_model:
             # Создаем QMessageBox
