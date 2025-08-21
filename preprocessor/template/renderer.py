@@ -23,14 +23,12 @@ _ASSIGN_RE_CACHE: Dict[str, re.Pattern] = {}
 def _assign_pattern(name: str) -> re.Pattern:
     """
     Регулярное выражение для строки присваивания APDL переменной 'name':
-    - начало строки ^name
-    - произвольные пробелы, знак '=', произвольная правая часть до конца строки (сохраняем хвост)
-    :param name:
-    :return:
+    ^name = что-то до конца строки.
     """
     if name not in _ASSIGN_RE_CACHE:
-        # (?m) - многострочный режим, ^ и $ якорятся к строкам
-        _ASSIGN_RE_CACHE[name] = re.compile(rf"(?m)^(?P<lhs>\s*{re.escape(name)}\s*=\s*(?P<rhs>[^\n\r]*)$")
+        _ASSIGN_RE_CACHE[name] = re.compile(
+            rf"(?m)^(?P<lhs>\s*{re.escape(name)}\s*=\s*)(?P<rhs>[^\n\r]*)$"
+        )
     return _ASSIGN_RE_CACHE[name]
 
 

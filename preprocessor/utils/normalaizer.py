@@ -1,4 +1,4 @@
-from Preprocessor.config.schema import ConfigModel
+from preprocessor.config.schema import ConfigModel
 
 
 class NormalizationError(Exception):

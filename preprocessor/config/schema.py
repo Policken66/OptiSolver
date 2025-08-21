@@ -67,7 +67,7 @@ class Constraints(BaseModel):
     model_config = ConfigDict(extra="forbid")
     sigma_eq_max: ElasticMod
     u_max: Meter
-    f_mib: FreqT
+    f_min: FreqT
     lambda_buckle_min: Annotated[float, Field(gt=0)]
 
 

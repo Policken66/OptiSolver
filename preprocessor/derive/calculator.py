@@ -1,7 +1,7 @@
 from math import isfinite
 from typing import Dict
 
-from Preprocessor.config.schema import ConfigModel
+from preprocessor.config.schema import ConfigModel
 
 
 class DerivationError(Exception):

@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from Preprocessor.config.schema import ConfigModel
+from preprocessor.config.schema import ConfigModel
 
 REQUIRED_NAMES = (
     "a11", "b11", "c", "dd", "a22", "b22",

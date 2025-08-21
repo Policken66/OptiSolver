@@ -2,7 +2,7 @@ from typing import Dict, Any
 
 from pydantic import ValidationError
 
-from Preprocessor.config.schema import ConfigModel
+from preprocessor.config.schema import ConfigModel
 
 
 class ConfigValidationError(Exception):
