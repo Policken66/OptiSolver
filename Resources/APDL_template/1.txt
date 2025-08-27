@@ -1,0 +1,524 @@
+!окончание прошлых процессов или расчетов
+Finish
+!очистка прошлых результатов расчета
+/Clear, start
+!использовать единицы СИ
+/Units, Si
+
+!кнопка для перезагрузки макроса, 
+!сначала под 1 увказано название txt,
+!формат txt и путь к файлу
+*ABBR, RELOAD, /INPUT,1, txt, C:\rb\no
+
+
+*ABBR, STATIC, /INPUT,1, txt, C:\rb\no,:Static
+*ABBR, BUCKLE, /INPUT, 1, txt, C:\rb\no,:Buckle
+*ABBR, FIRST1, /INPUT, 1, txt, C:\rb\no,:first1
+*ABBR, NEXT1, /INPUT,1, txt, C:\rb\no,:Next1
+*ABBR, MODAL, /INPUT, 1, txt, C:\rb\no,:Modal
+*ABBR, FIRST, /INPUT, 1, txt, C:\rb\no,:First
+*ABBR, NEXT, /INPUT, 1, txt, C:\rb\no,:Next
+*ABBR, rebra, /INPUT, 1, txt, C:\rb\no,:rebra
+
+
+!нумерация точек и линий,
+!если 1, то нумерация,0-нет
+/PNUM, KP, 0
+/PNUM, LINE, 0
+!открытие препроцессора
+/Prep7
+
+
+
+!геометрические параметры спиральных ребер
+a11=6e-3 !меняется
+b11=14e-3 !меняется
+!геометрические параметры кольцевых ребер
+c=3e-3 !меняется
+dd=14e-3 !!меняется
+
+!геометрические параметры шпангоутов
+a22=3e-2 !меняется
+b22=18e-3 !!меняется
+
+
+!число пар спиральных ребер
+N=72 !меняется
+!число ромбических ячеек по высоте
+m=19  !меняется
+!диаметр конструкции	
+d=2.560	!меняется
+!высота конструкции
+HH=5.585 !меняется
+!высота ромбической ячейки
+
+H=HH+HH/m 
+kk=H/m
+!число разбиения конечных элементов
+nn=2 !меняется
+dl=0.28 !коэффициент расстояния между двумя кольцевыми ребрами
+
+tet=360/N !угол поворота при построении
+
+
+
+CSYS,1 !переход в цилиндрическую с.к.
+
+
+!начало цикла для спиральных ребер 
+
+*do,i,1,N
+	*do,s,1,m+1	
+		K,,d/2,tet*i,kk*(s-1) !построение точек
+
+	*enddo
+
+*enddo
+
+! соединение точек линиями для спиральных ребер
+ii=1
+*do,i,1,N-1
+	*do,j,1,m
+		L,ii,ii+m+2
+		ii=ii+1
+	*enddo
+	ii=ii+1
+*enddo
+
+
+
+*do,i,1,m
+L,i,N*(m+1)-m+i
+*enddo
+
+
+*do,i,1,m
+L,i+1,N*(m+1)-m-1+i
+*enddo
+
+ii=2
+*do,i,1,N-1
+	*do,j,1,m
+		L,ii,ii+m
+		ii=ii+1
+	*enddo
+	ii=ii+1
+*enddo
+
+
+
+
+!построение точек для шпангоутов
+*do,i,1,N
+*do,s,1,m+1	
+		K,,d/2,tet*i,H/(m+1)-(H/(m+1))*dl
+		K,,d/2,tet*i,H-(H/(m+1))*dl
+		N,(i-1)*2+2,d/2,tet*i,H-(H/(m+1))*dl !задание узлов для шпангоута (верхнего)
+	*enddo
+*enddo
+
+
+
+!Кольцевые ребра точки
+*do,i,1,N
+	*do,s,2,2*m	
+		K,,d/2,tet*i,H/(2*m)*s+H/(4*m) !построение точек для кольцевых ребер
+	*enddo
+*enddo
+
+
+
+!сединение кольцевых ребер начальных точек с конечными
+*do,i,1,N-1
+*do,ii,1,2*m-3
+*do,iii,1,2
+L,N*(m+1)*3+1+(i-1)*(m*2-1)+ii-1,N*(m+1)*3+1+(i)*(m*2-1)+ii-1
+L,N*(m+1)*3+1+ii-1,N*(m+1)*3+1+(N-1)*(m*2-1)+ii-1
+L,N*(m+1)+2+(i-1)*(m*2+2)+iii-1,N*(m+1)+2+(i)*(m*2+2)+iii-1
+L,N*(m+1)+2+(i-1)*(m*2+2)+iii-1,N*(m+1)+2+(N-1)*(m*2+2)+iii-1
+
+L,N*(m+1)+2+iii-1,N*(m+1)+2+(N-1)*(m*2+2)+iii-1
+
+*enddo
+*enddo
+*enddo
+
+
+
+LCSL,ALL !разбиение пересечений линий
+
+
+*do,i,1,2
+*do,s,2,2*m	
+
+	Lsel,s,LOC,Z,H-(H/(m+1))*(dl-0.03),H
+	Lsel,a,LOC,Z,0,H/(m+1)-(H/(m+1))*(dl+0.02)
+
+	
+*enddo
+*enddo
+
+!удаление лишних точек и линий
+LDELE,ALL
+!выделение всей конструкции
+LSEL,s,,,ALL
+
+
+N,1,0,0,5.7966
+E1=190e9 !меняем
+E2=190e9 !меняем
+PoissonRatio=0.3 !меняем
+Density=1781 !меняем
+
+!реальные константы для beam4
+
+
+
+MP,EX,1,E1
+MP,DENS,1,Density
+MP,PRXY,1,PoissonRatio
+UIMP, 1, EX, DENS, PRXY, E1, Density, PoissonRatio
+R, 1, r1,r2,r3,r4,r5,r6
+RMORE,r7,r8,r9,
+
+
+MP,EX,2,E1
+MP,DENS,2,Density
+MP,PRXY,2,PoissonRatio
+UIMP, 2, EX, DENS, PRXY, E1, Density, PoissonRatio
+R, 2,r1,r2,r3,r4,r5,r6
+RMORE,r7,r8,r9,
+
+MP,EX,3,E1
+MP,PRXY,3,PoissonRatio
+UIMP, 3, EX, DENS, PRXY, E1, Density, PoissonRatio
+R, 3,r1,r2,r3,r4,r5,r6
+RMORE,r7,r8,r9,
+
+J11=a11*(b11**3)/12
+J12=b11*(a11**3)/12
+
+J21=a22*(b22**3)/12
+J22=b22*(a22**3)/12
+
+J31=c*(dd**3)/12
+J33=dd*(c**3)/12
+
+
+
+!ET,1,beam188
+!TYPE,1
+!KEYOPT,1,3,0
+!KEYOPT,1,2,0
+
+
+!ET,2,beam188
+!TYPE,2
+!KEYOPT,2,3,0
+!KEYOPT,2,2,0
+
+
+!ET,3,beam188
+!TYPE,3
+!KEYOPT,3,3,0
+!KEYOPT,3,2,0
+
+
+!тип элемента
+ET,1,beam4
+!основные опции 
+KEYOPT,1,6,0
+KEYOPT,1,7,0
+KEYOPT,1,9,0 
+KEYOPT,1,10,0
+
+
+ET,2,beam4
+KEYOPT,2,6,0
+KEYOPT,2,7,0
+KEYOPT,2,9,0! 9 промежуточных точек для построения эпюр
+KEYOPT,2,10,0
+ET,3,beam4
+
+KEYOPT,3,6,0
+KEYOPT,3,7,0
+KEYOPT,3,9,0! 9 промежуточных точек для построения эпюр
+KEYOPT,3,10,0
+
+ET,4,MPC184
+!KEYOPT,4,1,0 !link
+KEYOPT,4,1,1 !balka
+TYPE, 4
+
+
+
+
+!Задаем реальные константы
+!кoнечного элемента 
+!метка элемента, поперечное сечение, моменты иннерции
+R,1,a11*b11,J11,J12
+
+R,2,a22*b22,J21,J22
+
+!BEAM4: AREA, IZZ, IYY, TKZ, TKY, THETA, ISTRN, IXX, SHEARZ, SHEARY, SPIN, ADDMAS 
+R,3,c*dd,J31,J33
+
+
+!MSHAPE,0,3D
+!MSHKEY,1
+!SECTYPE, 1, BEAM, HRECT, MyName, 0
+!SECOFFSET, CENT
+!SECDATA,b11,a11,2e-3,1e-3,2e-3,1e-3,5,5
+
+
+!Определение формы сечения по метке элемента
+SECTYPE, 1, BEAM, RECT, MyName, 0
+!определение смещение осей в сечении элемента
+SECOFFSET, CENT
+!описание геометрии сечения
+SECDATA,b11,a11,5,5
+
+
+
+!SECTYPE, 2, BEAM, RECT, MyName, 0
+!SECOFFSET, CENT
+!SECDATA,b22,a22,5,5
+
+
+SECTYPE, 2, BEAM, RECT, MyName, 0
+SECOFFSET, CENT
+SECDATA,b22,a22,5,5
+
+
+SECTYPE, 3, BEAM, RECT, MyName, 0
+SECOFFSET, CENT
+SECDATA,dd,c,5,5
+
+!SECTYPE, 3, BEAM, HRECT, MyName, 0
+!SECOFFSET, CENT
+!SECDATA,dd,c,2e-3,1e-3,2e-3,1e-3,5,5
+
+
+
+LSEL,s,,,ALL
+ESEL,s
+
+!LSEL, NONE !сбрасываем весь выбор
+*do,i,2,m-1
+*do,s,2,2*m	
+!	Lsel,a,LOC,Z,H*(i-1)/(m)
+	Lsel,u,LOC,Z,H/(2*m)*s+H/(4*m)
+	Lsel,u,LOC,Z,H/(m+1)-(H/(m+1))*dl
+	Lsel,u,LOC,Z,H-(H/(m+1))*dl
+*enddo
+*enddo
+LESIZE, ALL, , ,5,,
+LATT,1,1,1,,,,1
+
+Allsel, all
+LSEL, NONE !сбрасываем весь выбор
+*do,i,2,2*m-2
+*do,s,2,2*m	
+	Lsel,a,LOC,Z,H/(2*m)*s+H/(4*m)
+*enddo
+*enddo
+
+LESIZE, ALL, , ,5,,
+LATT,3,3,3,,,,3
+
+Allsel, all
+LSEL, NONE !сбрасываем весь выбор
+	Lsel,a,LOC,Z,H/(m+1)-(H/(m+1))*dl
+	Lsel,a,LOC,Z,H-(H/(m+1))*dl
+LESIZE, ALL, , ,5,,
+LATT,2,2,2, , , ,2
+ALLSEL,ALL
+LMESH,all
+
+
+
+
+*do,i,1,N
+E,1,(i-1)*2+2
+	
+*enddo
+NUMMRG,NODE,1e-4, , ,HIGH 
+NUMMRG,Elem,1e-7, , ,HIGH 
+
+Finish
+
+
+:Static
+/Solu
+ANTYPE, STATIC
+NLGEOM,Off
+PSTRES,on
+
+!DK,	2120	,UY,0,	,0,UX,UZ,	,	,	,	,
+
+
+!Allsel, all
+
+ksel,s,LOC,Z,H/(m+1)-(H/(m+1))*0.28,H/(m+1)-(H/(m+1))*0.28
+	!DK,	ALL, ALL	
+	DK,ALL,UY,0,	,0,UX,UZ,	,	,	,	,
+Allsel, all
+
+F,1,MZ,8 896.444 !меняем
+F,1,FZ,-1 !117679.8*2 !меняем
+!F,1,FY,9806.65*2
+!-117679.8*2
+!-9806.65*0.2
+!-117679.8*2
+
+SOLVE
+Finish
+
+
+
+
+/POST1
+      ! Результаты постпроцессорной обработки,
+      ! вводить поблочно в окно ANSYS Input
+
+      ! Первый шаг нагружения – только узловые силы
+      SET,FIRST ! Считать первый ряд рассчитанных результатов
+      PLDISP,1 ! Показать деформированную форму
+
+
+      PLNSOL,U,Y,0,1 ! Показать перемещения вдоль OY
+      ! Второй шаг нагружения – узловые силы + распределенная нагрузка
+      SET,NEXT ! Считать следующий ряд результатов
+      PLNSOL,U,Y,0,1 ! Показать перемещения вдоль OY
+      ! Третий шаг нагружения – узловые силы + распределенная нагрузка + учет веса
+      SET,NEXT ! Считать следующий ряд результатов
+      PLNSOL,U,Y,0,1 ! Показать перемещения вдоль OY
+      ! Следующие операторы служат для построения эпюр
+      ! и могут быть использованы после любого шага считывания
+      !* Задать таблицу значений: максимальные напряжения
+      ETABLE, SMAXI, NMISC, 1
+      ETABLE, SMAXJ, NMISC, 21
+    !  PLLS, SMAXI,SMAXJ ! Построить графически эпюры
+      !* Задать таблицу значений: усилия вдоль OX в глобальной системе координат
+      ETABLE,FXI,SMISC,1
+      ETABLE,FXJ,SMISC,61
+     ! PLLS, FXI, FXJ ! Построить графически эпюры
+      !* Задать таблицу значений: усилия вдоль OY в глобальной системе координат
+      ETABLE,FYI,SMISC,2
+      ETABLE,FYJ,SMISC,62
+    !  PLLS,FYI,FYJ ! Построить графически эпюры
+      !* Задать таблицу значений: усилия вдоль OZ в глобальной системе координат
+      !ETABLE,FZI,SMISC,3
+      !ETABLE,FZJ,SMISC,63
+      !PLLS,FZI,FZJ ! Построить графически эпюры
+      !* Задать таблицу значений: моменты вдоль OX в глобальной системе координат
+      ETABLE,MXI,SMISC,4
+      ETABLE,MXJ,SMISC,64
+   !   PLLS, MXI, MXJ ! Построить графически эпюры
+      !* Задать таблицу значений: моменты вдоль OY в глобальной системе координат
+      ETABLE,MYI,SMISC,5
+      ETABLE,MYJ,SMISC,65
+   !   PLLS,MYI,MYJ ! Построить графически эпюры
+      !* Задать таблицу значений: моменты вдоль OZ в глобальной системе координат
+      ETABLE,MZI,SMISC,6
+      ETABLE,MZJ,SMISC,66
+  !    PLLS,MZI,MZJ ! Построить графически эпюры
+      ETABLE,max,NMISC,1
+      ETABLE,maxx,NMISC,3
+ !     PLLS,max,maxx ! Построить графически эпюры
+      ETABLE,SI,LS,2
+      ETABLE,SJ,LS,7
+      PLLS, SI, SJ
+
+      ETABLE,SDIRI,LS,1
+      ETABLE,SDIRJ,LS,6
+      PLLS,SDIRI,SDIRJ
+
+*return,-1
+
+
+
+:Modal
+/Solu
+
+	ksel,s,LOC,Z,H/(m+1)-(H/(m+1))*0.28,H/(m+1)-(H/(m+1))*0.28
+	DK,	ALL	,UY,0,	,0,UX,UZ,	,	,	,	,
+Allsel, all
+
+ANTYPE,MODAL
+MODOPT,REDUC,20,0,0,OFF,ON
+
+SOLVE
+/Post1
+SET,First
+PLDISP,0
+*return,-1
+
+:First
+/Post1
+SET,First
+PLDISP,0
+*return,-1
+
+:Next
+/Post1
+SET,Next
+PLDISP,0
+*return,-1
+Finish
+
+/SOLU ! Вход в процессор решения
+PSTRES,ON ! Установить вычисление напряженного состояния
+SOLVE ! Запуск на решение
+FINISH ! Выход из процессора
+:Buckle
+/SOLU ! Вход в процессор решения
+ANTYPE,1 ! Установить опции решения –
+! анализ на устойчивость в линейной постановке
+!* Определение метода решения и количества собственных форм,
+! подлежащих определению
+!BUCOPT,LANB,1,0.0,Center
+BUCOPT,LANB,20,0,0 ! Определить 4 формы
+MXPAND,20,0,0,0,1,
+SOLVE ! Решение
+FINISH ! Выход из процессора решения
+/Post1
+SET,First1
+PLDISP,0
+*return,-1
+
+:First1
+/Post1
+SET,First
+PLDISP,10
+*return,-1
+
+:Next1
+/Post1
+SET,Next1
+PLDISP,0
+*return,-1
+Finish
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
