@@ -1,14 +1,13 @@
 import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 from ansys.mapdl.core import launch_mapdl
 
 
 class SolverRunError(Exception):
     """Ошибка запуска MAPDL."""
-
 
 def run_mapdl(
     input_apdl: Path,
@@ -19,7 +18,7 @@ def run_mapdl(
     timeout_sec: int = 7200,
 ) -> Dict[str, Any]:
     """
-    Запускает MAPDL в минимальном режиме интеграции: подаёт input.apdl и сохраняет результаты.
+    Запускает MAPDL в минимальном режиме интеграции: подает input.apdl и сохраняет результаты.
 
     :param input_apdl: Путь к входному APDL-файлу.
     :param work_dir: Рабочая директория для MAPDL.
@@ -27,7 +26,7 @@ def run_mapdl(
     :param mapdl_exec: Путь к исполняемому файлу MAPDL (если None, используется автопоиск).
     :param jobname: Имя задания MAPDL (используется в названиях файлов).
     :param timeout_sec: Ограничение по времени работы (секунды).
-    :return: Словарь с отчётом о запуске.
+    :return: Словарь с отчетом о запуске.
     """
     work_dir = Path(work_dir).resolve()
     results_dir = Path(results_dir).resolve()
@@ -52,7 +51,7 @@ def run_mapdl(
     try:
         mapdl.clear()
         mapdl.input(str(local_input))
-        # ждём окончания работы
+        # ждем окончания работы
         mapdl.finish()
     except Exception as e:
         raise SolverRunError(f"Ошибка при выполнении MAPDL: {e}")
@@ -62,12 +61,12 @@ def run_mapdl(
     elapsed = (datetime.now() - start).total_seconds()
 
     # Сохраняем выходные файлы в results_dir
-    produced_files = []
+    produces_files = []
     for f in work_dir.iterdir():
         if f.suffix.lower() in (".out", ".rst", ".log", ".err"):
             target = results_dir / f.name
             shutil.copy2(f, target)
-            produced_files.append(str(target))
+            produces_files.append(str(target))
 
     return {
         "jobname": jobname,
@@ -75,5 +74,5 @@ def run_mapdl(
         "results_dir": str(results_dir),
         "input_apdl": str(local_input),
         "elapsed_sec": elapsed,
-        "produced_files": produced_files,
+        "produced_files": produces_files,
     }

@@ -1,5 +1,5 @@
 from pathlib import Path
-from solver.runner import run_mapdl
+from runner import run_mapdl
 
 report = run_mapdl(
     input_apdl=Path("C:\\Users\\komle\\source\\PycharmProjects\\OptiSolver\\runs\\input.apdl"),
