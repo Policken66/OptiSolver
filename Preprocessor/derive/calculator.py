@@ -45,3 +45,18 @@ def compute(cfg: ConfigModel) -> Dict[str, float]:
             raise DerivationError(f"Невалидное значение {name}: {val}")
 
     return {"tet": tet, "H": H}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
