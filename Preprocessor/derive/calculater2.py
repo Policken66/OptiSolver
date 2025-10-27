@@ -69,14 +69,27 @@ def algM():
 
     for i, value_alp_ in enumerate(alp):
         for j, value_alp_ in enumerate(N):
-            bb_sp=V1/(N[0]*h[0]*H/math.cos(alp[i]))
+            bb_sp=V1/(N[j]*h[0]*H/math.cos(alp[i]))
             mmm = (H / (2 * math.pi * D / 2)) * (N[j] * math.tan(alp[i]))/2
             mm = math.ceil(mmm)
             bb_k = V2 / (mm *2* math.pi * D / 2 * h[1])
             bb_=(bb_k+bb_sp)/2
-            print(mm)
+            print(bb_)
     # расчет кольцевых толщин ребер при фиксированной высоте )
 
+    {
+      "a11": h[0],
+      "b11": bb_,
+       "c": 1.2,
+       "dd": 1.8,
+       "a22": h[1],
+       "b22": bb_,
+       "N": 99,
+       "m": 4,
+       "d": 62.516999999999996,
+       "HH": 25.0,
+       "alp": 0.75
+    }
     #for i in range(0, enumerate(N)):
     #    print(i)
 
