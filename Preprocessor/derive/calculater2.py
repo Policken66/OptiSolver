@@ -72,7 +72,7 @@ def algM():
         for j in range(0,len(N)):
             bb_sp[i,j]=V1/(N[j]*h[0]*HH/math.cos(alp[i]))
             mmm[i,j]= (HH / (2 * math.pi * D / 2)) * (N[j] * math.tan(alp[i]))/2
-            mm [i,j] = np.round(mmm[i,j])*2-1 #число кольцевых ребер
+            mm [i,j] = np.round(mmm[i,j]) #число кольцевых ребер
             bb_k [i,j] = V2 / ((mm [i,j]) *2* math.pi * D / 2 * h[1])
             bb_[i,j]=(bb_k[i,j]+bb_sp[i,j])/2
     print(mm)
