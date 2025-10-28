@@ -1,14 +1,11 @@
 import math
 import numpy as np
 def algM():
-    N = np.array([30,45,60,75,90])*2
+    N = np.array([30,45,60,75])*2
     alp = np.array([14,16,18,20,22,24])*math.pi/180
-
-
 
     #n=np.array([[2,5,2],[15,5,5],[0.2,5,8]])
     #y=n.transpose()
-
 
 
     #print(alp)
@@ -29,8 +26,8 @@ def algM():
     #Вычисление количества ромбических ячеек mmm и mm- количество кольцевых ребер
     HH=5.585 #берется из кнопки высота конструкции
     D=2.560 #диаметр тоже кнопка
-    b=np.array([ 14,14,18])*0.001#значения толщин ребер
-    h=np.array([ 6,3,30])*0.001 #значения высот ребер
+    b=np.array([14,14,18])*0.001#значения толщин ребер
+    h=np.array([6,3,30])*0.001 #значения высот ребер
     alp0=19*math.pi/180
     N_sp=72 #пар спиральных ребер
     N_kol=37 #число кольцевых для исходной модели
@@ -43,39 +40,44 @@ def algM():
     V3=N_chp*math.pi*D/2*2*b[2]*h[2]
     V=V1+V2+V3
     #print(V2)
-
+    #Расчет масс приходящихся на каждое из семейства ребер
     M1=ro*V1
     M2 = ro * V2
     M3 = ro * V3
     M=M1+M2+M3
 
-
-    for i,value_alp_ in enumerate(alp):
-        for j, value_N_ in enumerate(N):
-            for k, value_N_ in enumerate(h):
-             mmm=(HH/(math.pi*D))*(N[0]*math.tan(18*math.pi/180))
-             mm=math.ceil(mmm)-k
-           # print(math.ceil(mm))
-           # print(mm)
-
+    #расчет длин спиральных ребер в зависимости от угла наклона
+    L = np.zeros(len(alp))
     #вычисление длин спиральных ребер
     for i, value_alp_ in enumerate(alp):
-        L = HH/math.cos(alp[i])
-        #print(L)
+        L [i] = HH/math.cos(alp[i])
+    #print(L)
+
     #расчет спиральных толщин ребер при фиксированной высоте
     mmm = np.zeros((len(alp), len(N)))
     mm = np.zeros((len(alp), len(N)))
     bb_k = np.zeros((len(alp), len(N)))
     bb_sp = np.zeros((len(alp), len(N)))
     bb_ = np.zeros((len(alp), len(N)))
+    hh_k = np.zeros((len(alp), len(N)))
+    hh_sp = np.zeros((len(alp), len(N)))
+
     for i in range(0,len(alp)):
         for j in range(0,len(N)):
-            bb_sp[i,j]=V1/(N[j]*h[0]*HH/math.cos(alp[i]))
-            mmm[i,j]= (HH / (2 * math.pi * D / 2)) * (N[j] * math.tan(alp[i]))/2
-            mm [i,j] = np.round(mmm[i,j]) #число кольцевых ребер
-            bb_k [i,j] = V2 / ((mm [i,j]) *2* math.pi * D / 2 * h[1])
-            bb_[i,j]=(bb_k[i,j]+bb_sp[i,j])/2
-    print(mm)
+            for k in range(4,0,-1):
+                #Расчет для толщин с фиксированной высотой относительно исходной конструкции
+             bb_sp[i,j]=V1/(N[j]*h[0]*L [i])
+             mmm[i,j]= (HH / (2 * math.pi * D / 2)) * (N[j] * math.tan(alp[i]))/2
+             mm [i,j] = np.round(mmm[i,j])+4*k#(k-1)*2 #число кольцевых ребер
+             bb_k [i,j] = V2 / ((mm [i,j]) *2* math.pi * D / 2 * h[1])
+             bb_[i,j]=(bb_k[i,j]+bb_sp[i,j])/2
+            #Расчет высоты реберной структуры при фиксированной толщине относительно исходной конструкции
+             hh_sp[i,j]=V1/(N[j]*b[0]*L [i])  #диапазон высот для каждой из моделей для спиральных ребер
+             hh_k[i, j] = V2 / ((mm[i, j]) * 2 * math.pi * D / 2 * b[1]) #диапазон высот для каждой из моделей для кольцевых ребер
+
+    print(hh_sp)
+    print(hh_k)
+    #print(bb_k)
 
 
 
