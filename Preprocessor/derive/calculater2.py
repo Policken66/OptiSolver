@@ -3,26 +3,6 @@ import numpy as np
 def algM():
     N = np.array([30,45,60,75])*2
     alp = np.array([14,16,18,20,22,24])*math.pi/180
-
-    #n=np.array([[2,5,2],[15,5,5],[0.2,5,8]])
-    #y=n.transpose()
-
-
-    #print(alp)
-    #print(N*alp)
-    #print(N[1])
-
-   # for i, value in enumerate(N):
-       #print(f"N[{i}] = {value}")
-
-#    for i, value in enumerate(alp):
-       # print(f"alp[{i}] = {value}")
-
-
-    #for i, value_alp in enumerate(alp):
-        #for j, value_N in enumerate(N):
-           # if j==0:
-            #print(value_alp)
     #Вычисление количества ромбических ячеек mmm и mm- количество кольцевых ребер
     HH=5.585 #берется из кнопки высота конструкции кнопка
     D=2.560 #диаметр тоже кнопка
@@ -45,6 +25,11 @@ def algM():
     M2 = ro * V2
     M3 = ro * V3
     M=M1+M2+M3
+    #в случае если измвестна масса, но неизвестна плотность материала
+    r01=M1/V1
+    r02=M2/V2
+    r03=M3/V3
+    print(r01,r02,r03)
 
     #расчет длин спиральных ребер в зависимости от угла наклона
     L = np.zeros(len(alp))
@@ -55,7 +40,7 @@ def algM():
 
     #расчет спиральных толщин ребер при фиксированной высоте
     mmm = np.zeros((len(alp), len(N)))
-    mm = np.zeros((len(alp), len(N)))
+    m = np.zeros((len(alp), len(N)))
     bb_k = np.zeros((len(alp), len(N)))
     bb_sp = np.zeros((len(alp), len(N)))
     bb_ = np.zeros((len(alp), len(N)))
@@ -68,43 +53,54 @@ def algM():
                 #Расчет для толщин с фиксированной высотой относительно исходной конструкции
              bb_sp[i,j]=V1/(N[j]*h[0]*L [i])
              mmm[i,j]= (HH / (2 * math.pi * D / 2)) * (N[j] * math.tan(alp[i]))/2
-             mm [i,j] = np.round(mmm[i,j])+4*k#(k-1)*2 #число кольцевых ребер
-             bb_k [i,j] = V2 / ((mm [i,j]) *2* math.pi * D / 2 * h[1])
+             m [i,j] = np.round(mmm[i,j])+4*k#(k-1)*2 #число кольцевых ребер
+             bb_k [i,j] = V2 / ((m [i,j]) *2* math.pi * D / 2 * h[1])
              bb_[i,j]=(bb_k[i,j]+bb_sp[i,j])/2
             #Расчет высоты реберной структуры при фиксированной толщине относительно исходной конструкции
              hh_sp[i,j]=V1/(N[j]*b[0]*L [i])  #диапазон высот для каждой из моделей для спиральных ребер
-             hh_k[i, j] = V2 / ((mm[i, j]) * 2 * math.pi * D / 2 * b[1]) #диапазон высот для каждой из моделей для кольцевых ребер
+             hh_k[i, j] = V2 / ((m[i, j]) * 2 * math.pi * D / 2 * b[1]) #диапазон высот для каждой из моделей для кольцевых ребер
+                #спиральные ребра а11, b11; c и dd кольцевые ребра
+                #если высота реберной структуры не меняется то этот словарь!!!!!
 
-    print(hh_sp)
-    print(hh_k)
+             my_list = [('a11', h[0]), ('b11', bb_[i,j]), ('c',h[1] ), ('dd',bb_[i,j]), ('a22',b[2]),('b22',h[2]),('m',m[i,j]),('d',D),('N',N[j]),('alp',alp[i]),('HH',HH)]
+             my_dict = dict(my_list)
+             #если толщина реберной структуры не меняется то это
+             my_list1 = [('a11', hh_sp[i,j]), ('b11', b[0]), ('c', hh_k[i,j]), ('dd', b[1]), ('a22', b[2]),('b22', h[2]), ('m', m[i, j]), ('d', D), ('N', N[j]), ('alp', alp[i]), ('HH', HH)]
+             my_dict1 = dict(my_list1)
+
+
+             print(my_dict1, my_dict)
+            #{'a11': hh_sp[i,j], 'b11': b[0], 'c': 3,'d':1.8, }
+
+
+
+
+            # dict_params = {
+            #    "a11": hh_sp[1,1],
+            #    "b11": b[0],
+             #   "c": 1.2,
+             #   "dd": 1.8,
+            #    "a22": h[0],
+             #   "b22": bb_,
+             #   "N": N[j],
+              #  "m": m [1,1],
+              #  "d": 62.516999999999996,
+              #  "HH": 25.0,
+              #  "alp": alp[i]
+            # }
+             #print(dict_params)
+    #print(hh_k)
     #print(bb_k)
+    #my_list = [('a', 1), ('b', 2), ('c', 3)]
+    #my_dict = dict(my_list)
+    #print(my_dict)
+
 
 
 
 
     # расчет кольцевых толщин ребер при фиксированной высоте )
 
-   # {
- #     "a11": h[0],
-  #    "b11": bb_,
-   #    "c": 1.2,
-   #    "dd": 1.8,
-   #    "a22": h[1],
-   #    "b22": bb_,
-   #    "N": 99,
-   #    "m": 4,
-   #    "d": 62.516999999999996,
-   #    "HH": 25.0,
-   #    "alp": 0.75
-  # }
-    #for i in range(0, enumerate(N)):
-    #    print(i)
-
-
-
-
-   # x=np.linalg.solve(n,alp)
-   # print(x)
 
 
 
